@@ -1,0 +1,19 @@
+{
+  "name": "back",
+  "version": "0.0.1",
+  "description": "Backend for Toptal technical interview",
+  "main": "app.js",
+  "author": "Emilio Venegas",
+  "license": "MIT",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "dependencies": {
+    "apollo-server": "^2.19.0",
+    "dotenv": "^8.2.0",
+    "graphql": "^15.4.0",
+    "mongoose": "^5.10.11",
+    "nodemon": "^2.0.6"
+  }
+}
