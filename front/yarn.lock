@@ -1095,6 +1095,11 @@
     lodash "^4.17.19"
     to-fast-properties "^2.0.0"
 
+"@fullcalendar/bootstrap@4.4.2":
+  version "4.4.2"
+  resolved "https://registry.yarnpkg.com/@fullcalendar/bootstrap/-/bootstrap-4.4.2.tgz#b396aa39fd2e49c1bfb68deb677df5a5544bb924"
+  integrity sha512-zxtQvpZqr7zeBCfszo/i1e4zCvGwLh2zOp8J6Wxw5s73HsB1zuftWop7sPO+qhRrhX5MdM9i/wr8/nNY8BZSmw==
+
 "@fullcalendar/core@4.4.2", "@fullcalendar/core@~4.4.0":
   version "4.4.2"
   resolved "https://registry.yarnpkg.com/@fullcalendar/core/-/core-4.4.2.tgz#864abe98cce4497a163c01a8fc30389f15d3d4e1"

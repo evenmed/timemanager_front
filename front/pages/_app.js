@@ -2,7 +2,10 @@ import Head from "next/head";
 import { ApolloProvider } from "@apollo/client";
 import client from "../lib/apolloClient";
 
-import "../styles/globals.sass";
+// Bootstrap styles and theme
+// @fullcalendar uses Bootstrap, so for simplicity's sake
+// we'll just use it for the whole project
+import "../styles/fontAwesome/all.min.css";
 import "../styles/darkly.min.css";
 
 function MyApp({ Component, pageProps }) {

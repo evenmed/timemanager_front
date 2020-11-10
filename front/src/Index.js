@@ -11,11 +11,11 @@ const DynamicCalendar = dynamic(() => import("./Calendar/Calendar"), {
 
 function Index() {
   return (
-    <div className={styles.container}>
-      <h1 className={styles.title}>Ultimate Time Manny</h1>
-      <p>
+    <div className="container">
+      <h1>Ultimate Time Manager</h1>
+      <div className="mb-2">
         <AddEntryModal /> <SettingsModal />
-      </p>
+      </div>
       <div>
         <DynamicCalendar />
       </div>

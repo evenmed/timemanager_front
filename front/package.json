@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@apollo/client": "^3.2.5",
+    "@fullcalendar/bootstrap": "4.4.2",
     "@fullcalendar/core": "4.4.2",
     "@fullcalendar/daygrid": "4.4.2",
     "@fullcalendar/list": "4.4.2",
