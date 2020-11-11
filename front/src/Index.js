@@ -2,8 +2,6 @@ import dynamic from "next/dynamic";
 import AddEntryModal from "./Modals/AddEntryModal";
 import SettingsModal from "./Modals/SettingsModal";
 
-import styles from "../styles/Home.module.sass";
-
 // Don't SSR the calendar, as fullcalendar doesn't support it
 const DynamicCalendar = dynamic(() => import("./Calendar/Calendar"), {
   ssr: false,
@@ -13,7 +11,7 @@ function Index() {
   return (
     <div className="container">
       <h1>Ultimate Time Manager</h1>
-      <div className="mb-2">
+      <div className="mt-3 mb-4">
         <AddEntryModal /> <SettingsModal />
       </div>
       <div>

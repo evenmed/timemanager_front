@@ -8,6 +8,9 @@ import client from "../lib/apolloClient";
 import "../styles/fontAwesome/all.min.css";
 import "../styles/darkly.min.css";
 
+// Custom styles
+import "../styles/globals.sass";
+
 function MyApp({ Component, pageProps }) {
   return (
     <>
