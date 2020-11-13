@@ -12,7 +12,8 @@ import "@fullcalendar/timegrid/main.css";
 import "@fullcalendar/list/main.css";
 
 import parseEvents from "../../lib/parseEvents";
-import maybeAddTrailingZero from "../../lib/maybeAddTrailingZero";
+import dateObjectToString from "../../lib/dateObjectToString";
+import minutesToHours from "../../lib/minutesToHours";
 
 // Sample API response
 const sampleData = [
@@ -37,13 +38,13 @@ const sampleData = [
   },
   {
     date: "2020-11-10",
-    time: "300", // minutes
+    time: "210", // minutes
     title: "Went climbing",
     notes: "Managed to send 2 V8's in a single day whoop whoop!",
   },
   {
     date: "2020-11-11",
-    time: "90", // minutes
+    time: "900", // minutes
     title: "Ran 15 km",
     notes: "",
   },
@@ -60,12 +61,10 @@ const preferredWorkTime = 480; // minutes (8 hours)
 function Calendar() {
   const [events, minutesByDate] = parseEvents(sampleData);
 
-  console.log(minutesByDate);
-
   return (
     <div>
       <FullCalendar
-        defaultView="timeGridWeek"
+        defaultView="listWeek"
         header={{
           left: "prev,next today",
           center: "title",
@@ -83,26 +82,46 @@ function Calendar() {
         allDaySlot={false}
         slotLabelFormat="H [h]"
         displayEventTime={false}
+        timeZone="UTC"
+        listDayFormat="ddd, MMM D, YYYY"
+        listDayAltFormat={(date) => {
+          // Add total hours to day heading in list view
+          const dateString = dateObjectToString(date.date.marker);
+          const hours = minutesToHours(minutesByDate[dateString] || 0);
+
+          return `(${hours} hours total)`;
+        }}
         scrollTime="00:00:00"
         dayRender={({ date, el }) => {
           // Remove default background color
           el.classList.remove("alert-info");
           el.classList.remove("alert");
 
-          // Format date
-          const year = date.getFullYear();
-          const month = maybeAddTrailingZero(date.getMonth() + 1);
-          const day = maybeAddTrailingZero(date.getDate());
-
-          console.log(`${year}-${month}-${day}`);
-          console.log(minutesByDate[`${year}-${month}-${day}`]);
+          // Get mins worked on date
+          const dateString = dateObjectToString(date);
+          const totalMins = minutesByDate[dateString] || 0;
 
           // Set bg color based on if worked over preferred work time
-          if (minutesByDate[`${year}-${month}-${day}`] > preferredWorkTime)
-            el.classList.add("bg-success");
+          if (totalMins >= preferredWorkTime) el.classList.add("bg-success");
           else el.classList.add("bg-danger");
 
           el.classList.add("op-5");
+
+          return el;
+        }}
+        datesRender={({ el, view }) => {
+          // List view doesn't call dayRender, so we need to use this
+          if (view.type !== "listWeek") return;
+
+          el.querySelectorAll(".fc-list-heading").forEach((dateHeading) => {
+            const dateString = dateHeading.dataset.date;
+            const totalMins = minutesByDate[dateString] || 0;
+
+            // Set bg color based on if worked over preferred work time
+            if (totalMins >= preferredWorkTime)
+              dateHeading.classList.add("bg-success");
+            else dateHeading.classList.add("bg-danger");
+          });
 
           return el;
         }}

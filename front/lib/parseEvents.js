@@ -1,4 +1,5 @@
 import minsToString from "./minutesToTimeString";
+import minutesToHours from "./minutesToHours";
 
 /**
  * Parses events from API to be displayed in the calendar and calculates the
@@ -22,7 +23,7 @@ export default function parseEvents(events) {
     return {
       start: `${date}T${minsToString(startMins)}`,
       end: `${date}T${minsToString(endMins)}`,
-      title: `(${Math.round(time / 6) / 10} h) ${title}`,
+      title: `(${minutesToHours(time)} h) ${title}`,
       extendedProps: { notes },
     };
   });
