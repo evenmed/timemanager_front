@@ -11,6 +11,8 @@ const passport = require("passport");
 const resolvers = require("./schema/resolvers");
 const typeDefs = require("./schema/types");
 
+const isDev = process.env.NODE_ENV === "development";
+
 // Connect to db
 mongoose.connect(
   `mongodb+srv://${process.env.DB_USER}:${encodeURIComponent(
@@ -67,13 +69,18 @@ const server = new ApolloServer({
     credentials: true,
     origin: process.env.FRONTEND_URL,
   },
+  playground: isDev,
+  context: ({ req }) => {
+    return { req };
+  },
 });
 
 server.applyMiddleware({ app });
 
 const port = process.env.PORT;
 
-// The `listen` method launches a web server.
 app.listen({ port }, () => {
-  console.log(`🚀  Server ready on port ${port} (http://localhost:${port})`);
+  console.log(`🚀  Server ready on port ${port}`);
+  if (isDev)
+    console.log(`Playground: http://localhost:${port}${server.graphqlPath}`);
 });
