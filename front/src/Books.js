@@ -1,7 +1,6 @@
 import { useQuery, gql } from "@apollo/client";
 
 import Error from "./helpers/Error";
-import styles from "../styles/Home.module.css";
 
 const BOOKS_QUERY = gql`
   query getBooks {
@@ -15,7 +14,7 @@ const BOOKS_QUERY = gql`
 const Books = () => {
   const { loading, error, data } = useQuery(BOOKS_QUERY);
 
-  if (loading) return <p className={styles.description}>Fetching books...</p>;
+  if (loading) return <p>Fetching books...</p>;
   if (error) return <Error error={error} />;
 
   return (

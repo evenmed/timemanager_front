@@ -4,8 +4,6 @@ import SettingsModal from "./Modals/SettingsModal";
 import User from "./User/User";
 import LogInRegister from "./User/LogInRegister";
 
-import styles from "../styles/Home.module.sass";
-
 // Don't SSR the calendar, as fullcalendar doesn't support it
 const DynamicCalendar = dynamic(() => import("./Calendar/Calendar"), {
   ssr: false,
@@ -13,14 +11,14 @@ const DynamicCalendar = dynamic(() => import("./Calendar/Calendar"), {
 
 function Index() {
   return (
-    <div className={styles.container}>
-      <h1 className={styles.title}>Ultimate Time Manager</h1>
+    <div className="container">
+      <h1>Ultimate Time Manager</h1>
       <User unauthorizedContent={<LogInRegister />}>
         {(me) => (
           <>
-            <p>
+            <div className="mt-3 mb-4">
               <AddEntryModal /> <SettingsModal />
-            </p>
+            </div>
             <div>
               <DynamicCalendar />
             </div>
