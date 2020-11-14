@@ -1,27 +1,31 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import styles from "../../styles/Helpers.module.sass";
-
 const DisplayError = ({ error }) => {
   if (!error || !error.message) return null;
+
   if (
     error.networkError &&
     error.networkError.result &&
     error.networkError.result.errors.length
   ) {
     return error.networkError.result.errors.map((error, i) => (
-      <p key={i} data-test="graphql-error" className={styles.error}>
+      <div
+        key={i}
+        data-test="graphql-error"
+        className="alert alert-danger my-4"
+      >
         <strong>Error: </strong>
         {error.message.replace("GraphQL error: ", "")}
-      </p>
+      </div>
     ));
   }
+
   return (
-    <p data-test="graphql-error" className={styles.error}>
+    <div className="alert alert-danger my-4" data-test="graphql-error">
       <strong>Error: </strong>
-      {error.message.replace("GraphQL error: ", "")}
-    </p>
+      {error.message}
+    </div>
   );
 };
 

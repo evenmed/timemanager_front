@@ -8,4 +8,7 @@ module.exports = {
   book: () => {
     return Book.findOne();
   },
+  me: (_parent, _args, ctx) => {
+    return ctx.req.user;
+  },
 };

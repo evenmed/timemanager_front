@@ -11,8 +11,8 @@ const types = gql`
   }
   
   type User {
-    username: String
-    permissions: [Permission]
+    username: String!
+    permissions: [Permission!]!
   }
 
   # This "Book" type defines the queryable fields for every book in our data source.
@@ -24,6 +24,7 @@ const types = gql`
   type Query {
     books: [Book]
     book: Book
+    me: User
   }
 
   type Mutation {
@@ -32,6 +33,10 @@ const types = gql`
       username: String!,
       password: String!,
       permissions: [Permission!]
+    ): User
+    logIn(
+      username: String!,
+      password: String!
     ): User
   }
 `;
