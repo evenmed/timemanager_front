@@ -1,4 +1,4 @@
-const { gql } = require("apollo-server");
+const { gql } = require("apollo-server-express");
 
 const types = gql`
   # This "Book" type defines the queryable fields for every book in our data source.
