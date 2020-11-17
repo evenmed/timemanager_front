@@ -32,7 +32,7 @@ module.exports = {
       user: mongoose.Types.ObjectId(user),
       date: {
         $gte: minDate,
-        $lte: maxDate,
+        $lt: maxDate, // Max date is exclusive
       },
     }).populate("user");
 
