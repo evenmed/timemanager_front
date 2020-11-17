@@ -5,7 +5,7 @@ const EventSchema = new Schema({
   title: {
     type: String,
     required: "Please enter a title",
-    maxLength: [100, "Event title can't be longer than 100 characters"],
+    maxlength: [100, "Event title can't be longer than 100 characters"],
   },
   date: {
     type: Date,

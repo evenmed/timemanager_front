@@ -4,6 +4,12 @@ import PropTypes from "prop-types";
 const DisplayError = ({ error }) => {
   if (!error || !error.message) return null;
 
+  const formatErrorMessage = (msg) => {
+    // Remove everything before ":"
+    const parts = msg.split(":");
+    return parts[parts.length - 1].replace("username", "email");
+  };
+
   if (
     error.networkError &&
     error.networkError.result &&
@@ -16,7 +22,7 @@ const DisplayError = ({ error }) => {
         className="alert alert-danger my-4"
       >
         <strong>Error: </strong>
-        {error.message.replace("username", "email")}
+        {formatErrorMessage(error.message)}
       </div>
     ));
   }
@@ -24,7 +30,7 @@ const DisplayError = ({ error }) => {
   return (
     <div className="alert alert-danger my-4" data-test="graphql-error">
       <strong>Error: </strong>
-      {error.message.replace("username", "email")}
+      {formatErrorMessage(error.message)}
     </div>
   );
 };

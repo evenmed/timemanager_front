@@ -63,6 +63,8 @@ module.exports = {
   updateEvent: async (_parent, args, ctx) => {
     isLoggedIn(ctx);
 
+    // console.log("updateEvent", args);
+
     if (!isValidDateString(args.date)) {
       throw new Error("Please enter a valid date in YYYY-MM-DD format");
     }

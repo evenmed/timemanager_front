@@ -24,11 +24,16 @@ function Register(props) {
         initialValues={{ email: "", password: "", passwordConfirm: "" }}
         validate={(values) => {
           const errors = {};
-          if (values.password !== values.passwordConfirm) {
+          if (
+            values.password &&
+            values.passwordConfirm &&
+            values.password !== values.passwordConfirm
+          ) {
             errors.passwordConfirm = "Passwords do not match";
           }
           return errors;
         }}
+        validateOnChange={false}
         onSubmit={(values, { setSubmitting, errors }) => {
           if (errors && errors.length) return;
 
