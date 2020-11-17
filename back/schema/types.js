@@ -11,25 +11,30 @@ const types = gql`
   }
   
   type User {
-    _id: String!
+    _id: ID!
     username: String!
     permissions: [Permission!]!
   }
-
-  # This "Book" type defines the queryable fields for every book in our data source.
-  type Book {
-    title: String
-    author: String
+  
+  type Event {
+    _id: ID!
+    user: User!
+    title: String!
+    date: String!
+    time: Int!
+    notes: String
   }
 
   type Query {
-    books: [Book]
-    book: Book
     me: User
+    events(
+      minDate: String!,
+      maxDate: String!,
+      user: ID
+    ): [Event!]!
   }
 
   type Mutation {
-    addBook(title: String!, author: String!): Book
     createUser(
       username: String!,
       password: String!,
@@ -40,6 +45,14 @@ const types = gql`
       password: String!
     ): User
     logOut: Boolean
+
+    updateEvent(
+      _id: ID
+      title: String!
+      date: String!
+      time: Int!
+      notes: String
+    ): Event
   }
 `;
 

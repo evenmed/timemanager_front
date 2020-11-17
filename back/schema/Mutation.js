@@ -1,15 +1,11 @@
 const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
-const Book = require("../models/Book");
 const User = require("../models/User");
+const Event = require("../models/Event");
 const isLoggedIn = require("../lib/isLoggedIn");
+const isValidDateString = require("../lib/isValidDateString");
 
 module.exports = {
-  addBook: (parent, args, ctx) => {
-    const newBook = new Book(args);
-    return newBook.save();
-  },
-
   createUser: async (_parent, { username, password, permissions }, ctx) => {
     // console.log(ctx);
     if (permissions && permissions.length) {
@@ -62,5 +58,39 @@ module.exports = {
 
     // Return user
     return true;
+  },
+
+  updateEvent: async (_parent, args, ctx) => {
+    isLoggedIn(ctx);
+
+    if (!isValidDateString(args.date)) {
+      throw new Error("Please enter a valid date in YYYY-MM-DD format");
+    }
+
+    const event = args._id
+      ? await Event.findOne({ _id: mongoose.Types.ObjectId(args._id) })
+      : new Event({
+          ...args,
+          user: ctx.req.user,
+        });
+
+    if (!event) {
+      if (args._id)
+        throw new Error("The event you're trying to update doesn't exist");
+
+      throw new Error(
+        "An unknown error occurred while creating the event. Please try again"
+      );
+    }
+
+    if (args._id && event.user !== ctx.req.user._id) {
+      // User doesn't own event, make sure it's an admin
+      isLoggedIn(ctx, ["ADMIN"]);
+    }
+
+    await event.save();
+    // await event.populate("user").execPopulate();
+
+    return event.populate("user").execPopulate();
   },
 };

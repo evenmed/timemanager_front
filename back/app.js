@@ -45,8 +45,8 @@ mongoose.connection.once("open", () => {
 });
 
 // Require models
-require("./models/Book");
 const User = require("./models/User");
+require("./models/Event");
 
 // Initialize express app
 const app = express();
@@ -79,6 +79,7 @@ app.use(async (req, _res, next) => {
 
   const user = await User.findById(req.userId);
   req.user = {
+    _id: String(user._id),
     username: user.username,
     permissions: user.permissions,
   };

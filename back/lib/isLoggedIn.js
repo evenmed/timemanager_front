@@ -7,16 +7,14 @@
  * Function will work if user has ANY of the permissions
  * @param {Boolean} bool (Optional) If true, returns a boolean instead of throwing an error
  *
- * @return {Boolean} If bool is true, returns a Boolean indicating whether user
+ * @return {Boolean|Error} If bool is true, returns a Boolean indicating whether user
  * is logged in / has ANY of the specified permissions
  */
 const isLoggedIn = (ctx, permissions = false, bool = false) => {
-  let loggedIn = ctx.req.isAuthenticated();
+  let loggedIn = ctx.req.user && ctx.req.user._id;
 
   if (permissions && permissions.length) {
     loggedIn = false;
-
-    console.log(ctx.req.user.permissions);
 
     if (ctx.req.user && ctx.req.user.permissions) {
       for (const perm of permissions) {
