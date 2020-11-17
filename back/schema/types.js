@@ -11,6 +11,7 @@ const types = gql`
   }
   
   type User {
+    _id: String!
     username: String!
     permissions: [Permission!]!
   }
@@ -38,6 +39,7 @@ const types = gql`
       username: String!,
       password: String!
     ): User
+    logOut: Boolean
   }
 `;
 

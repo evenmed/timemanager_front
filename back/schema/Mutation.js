@@ -10,18 +10,36 @@ module.exports = {
     return newBook.save();
   },
 
-  createUser: (_parent, { username, password, permissions }, ctx) => {
+  createUser: async (_parent, { username, password, permissions }, ctx) => {
     // console.log(ctx);
     if (permissions && permissions.length) {
       // Setting custom permissions, make sure it's an admin or UM
-      isLoggedIn(ctx, ["ADMIN", "USERMANAGER", "USER"]);
+      isLoggedIn(ctx, ["ADMIN", "USERMANAGER"]);
     } else {
       permissions = ["USER"];
     }
-    return User.register(new User({ username, permissions }), password);
+
+    const user = await User.register(
+      new User({ username, permissions }),
+      password
+    ).catch((e) => {
+      throw e;
+    });
+
+    // Generate JWT token
+    const token = jwt.sign({ userId: user._id }, process.env.APP_SECRET);
+
+    // Set the cookie
+    ctx.res.cookie("token", token, {
+      httpOnly: true,
+      maxAge: 1000 * 60 * 60 * 24 * 31,
+    });
+
+    // Return user
+    return user;
   },
 
-  logIn: async (parent, { username, password }, ctx) => {
+  logIn: async (_parent, { username, password }, ctx) => {
     const { user } = await User.authenticate()(username, password);
     if (!user) throw new Error("Invalid credentials. Please try again.");
 
@@ -36,5 +54,13 @@ module.exports = {
 
     // Return user
     return user;
+  },
+
+  logOut: async (_parent, _args, ctx) => {
+    // Delete the cookie
+    ctx.res.clearCookie("token");
+
+    // Return user
+    return true;
   },
 };
