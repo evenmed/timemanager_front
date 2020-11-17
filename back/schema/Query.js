@@ -9,31 +9,31 @@ module.exports = {
     return ctx.req.user;
   },
 
-  events: async (_parent, { minDate, maxDate, user }, ctx) => {
+  events: async (_parent, { user }, ctx) => {
+    // Only logged in users can see events
+    isLoggedIn(ctx);
+
     if (user && user !== ctx.req.user._id) {
       // Querying for a specific user, make sure it's admin
       isLoggedIn(ctx, ["ADMIN"]);
     } else {
-      // Only logged in users can see events
-      isLoggedIn(ctx);
-
       user = ctx.req.user._id;
     }
 
-    if (
-      !isValidDateString(minDate) ||
-      !isValidDateString(maxDate) ||
-      new Date(minDate) >= new Date(maxDate)
-    ) {
-      throw new Error("Please enter a valid range of dates");
-    }
+    // if (
+    //   !isValidDateString(minDate) ||
+    //   !isValidDateString(maxDate) ||
+    //   new Date(minDate) >= new Date(maxDate)
+    // ) {
+    //   throw new Error("Please enter a valid range of dates");
+    // }
 
     const events = await Event.find({
       user: mongoose.Types.ObjectId(user),
-      date: {
-        $gte: minDate,
-        $lt: maxDate, // Max date is exclusive
-      },
+      // date: {
+      //   $gte: minDate,
+      //   $lt: maxDate, // Max date is exclusive
+      // },
     }).populate("user");
 
     return events;

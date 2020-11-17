@@ -28,8 +28,6 @@ const types = gql`
   type Query {
     me: User
     events(
-      minDate: String!,
-      maxDate: String!,
       user: ID
     ): [Event!]!
   }

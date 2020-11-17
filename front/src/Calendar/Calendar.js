@@ -1,65 +1,43 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import listPlugin from "@fullcalendar/list";
 import momentPlugin from "@fullcalendar/moment";
 import bootstrapPlugin from "@fullcalendar/bootstrap";
+import { useQuery, gql } from "@apollo/client";
 
 import "@fullcalendar/core/main.css";
 import "@fullcalendar/daygrid/main.css";
 import "@fullcalendar/timegrid/main.css";
 import "@fullcalendar/list/main.css";
 
+import Error from "../helpers/Error";
 import parseEvents from "../../lib/parseEvents";
 import dateObjectToString from "../../lib/dateObjectToString";
 import minutesToHours from "../../lib/minutesToHours";
 
-// Sample API response
-const sampleData = [
-  {
-    date: "2020-11-10",
-    time: "120", // minutes
-    title: "Designed a beautiful logo for Toptal",
-    notes:
-      "As part of the Toptal screening process, I designed a new logo for them. It took me 2 hours.",
-  },
-  {
-    date: "2020-11-09",
-    time: "210", // minutes
-    title: "Drank a big jug of coffee",
-    notes: "",
-  },
-  {
-    date: "2020-11-10",
-    time: "150", // minutes
-    title: "Made breakfast and also ate it",
-    notes: "I cooked up an omelet with cheese, ham, and some tomato sauce 😋",
-  },
-  {
-    date: "2020-11-10",
-    time: "210", // minutes
-    title: "Went climbing",
-    notes: "Managed to send 2 V8's in a single day whoop whoop!",
-  },
-  {
-    date: "2020-11-11",
-    time: "900", // minutes
-    title: "Ran 15 km",
-    notes: "",
-  },
-  {
-    date: "2020-11-09",
-    time: "240", // minutes
-    title: "Went snowboarding",
-    notes: "",
-  },
-];
+const EVENTS_QUERY = gql`
+  query events($user: ID) {
+    events(user: $user) {
+      _id
+      date
+      time
+      title
+      notes
+    }
+  }
+`;
 
 const preferredWorkTime = 480; // minutes (8 hours)
 
 function Calendar() {
-  const [events, minutesByDate] = parseEvents(sampleData);
+  const { loading, error, data } = useQuery(EVENTS_QUERY);
+
+  if (loading) return <p>Loading events...</p>;
+  if (error) return <Error error={error} />;
+
+  const [events, minutesByDate] = parseEvents(data ? data.events : undefined);
 
   return (
     <div className="col-12">
@@ -79,6 +57,7 @@ function Calendar() {
         ]}
         themeSystem="bootstrap"
         events={events}
+        editable={false}
         allDaySlot={false}
         slotLabelFormat="H [h]"
         displayEventTime={false}

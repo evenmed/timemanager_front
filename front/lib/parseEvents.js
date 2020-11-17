@@ -14,6 +14,8 @@ import minutesToHours from "./minutesToHours";
 export default function parseEvents(events) {
   let totalMinsByDate = {};
 
+  if (!events || !events.length) return [[], totalMinsByDate];
+
   const parsedEvents = events.map(({ date, title, time, notes }) => {
     const startMins = totalMinsByDate[date] || 0;
     const endMins = parseInt(startMins) + parseInt(time);
