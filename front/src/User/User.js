@@ -17,20 +17,11 @@ const User = (props) => {
   if (loading) return <p>Authenticating...</p>;
   if (error) return <Error error={error} />;
 
-  if (!data.me) {
-    if (props.unauthorizedContent) return props.unauthorizedContent;
-
-    return (
-      <Error error={{ message: "You must be signed in to see this content" }} />
-    );
-  }
-
   return props.children(data.me);
 };
 
 User.propTypes = {
   children: PropTypes.func.isRequired,
-  unauthorizedContent: PropTypes.element,
 };
 
 export default User;

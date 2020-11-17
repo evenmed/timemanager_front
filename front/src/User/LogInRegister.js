@@ -7,7 +7,7 @@ const LogInRegister = (props) => {
   const [register, setRegister] = useState(false);
 
   return (
-    <div className="mt-4">
+    <div className="mt-4 col-12 col-md-8 ">
       {register ? (
         <>
           <div className="mb-3 text-center">

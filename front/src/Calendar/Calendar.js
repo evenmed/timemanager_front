@@ -62,9 +62,9 @@ function Calendar() {
   const [events, minutesByDate] = parseEvents(sampleData);
 
   return (
-    <div>
+    <div className="col-12">
       <FullCalendar
-        defaultView="listWeek"
+        defaultView="timeGridWeek"
         header={{
           left: "prev,next today",
           center: "title",

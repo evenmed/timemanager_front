@@ -16,7 +16,7 @@ const DisplayError = ({ error }) => {
         className="alert alert-danger my-4"
       >
         <strong>Error: </strong>
-        {error.message.replace("GraphQL error: ", "")}
+        {error.message.replace("username", "email")}
       </div>
     ));
   }
@@ -24,7 +24,7 @@ const DisplayError = ({ error }) => {
   return (
     <div className="alert alert-danger my-4" data-test="graphql-error">
       <strong>Error: </strong>
-      {error.message}
+      {error.message.replace("username", "email")}
     </div>
   );
 };

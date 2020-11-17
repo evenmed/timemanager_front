@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Formik } from "formik";
 import { useMutation, gql } from "@apollo/client";
 
@@ -15,6 +14,7 @@ const LOG_IN_MUTATION = gql`
 function LogIn(props) {
   const [logIn, { error, loading }] = useMutation(LOG_IN_MUTATION, {
     refetchQueries: ["me"],
+    awaitRefetchQueries: true,
   });
 
   return (
@@ -51,7 +51,7 @@ function LogIn(props) {
                 className="form-control"
                 name="email"
                 id="logInEmail"
-                autoComplete="username"
+                autoComplete="email"
                 onChange={handleChange}
                 onBlur={handleBlur}
                 value={values.email}
@@ -73,9 +73,9 @@ function LogIn(props) {
             <button
               className="btn btn-success btn-block"
               type="submit"
-              disabled={isSubmitting}
+              disabled={isSubmitting || loading}
             >
-              {isSubmitting ? "Submitting..." : "Submit"}
+              {isSubmitting || loading ? "Submitting..." : "Submit"}
             </button>
           </form>
         )}
