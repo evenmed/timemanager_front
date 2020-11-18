@@ -1,34 +1,22 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 
 const Modal = (props) => {
-  const [active, setActive] = useState(false);
-
-  const showModal = () => {
-    document.body.classList.add("modal-open");
-    setActive(true);
-  };
-
-  const hideModal = () => {
-    document.body.classList.remove("modal-open");
-    setActive(false);
-  };
+  useEffect(() => {
+    if (props.active) {
+      document.body.classList.add("modal-open");
+    } else {
+      document.body.classList.remove("modal-open");
+    }
+  }, [props.active]);
 
   return (
     <>
-      <button
-        className={`btn btn-${
-          props.toggleButtonType ? props.toggleButtonType : "primary"
-        }`}
-        onClick={showModal}
-      >
-        {props.toggleButtonContent}
-      </button>
       <div
-        className={`modal fade ${active ? "show" : ""}`}
+        className={`modal fade ${props.active ? "show" : ""}`}
         style={{
           display: "block",
-          pointerEvents: active ? "all" : "none",
+          pointerEvents: props.active ? "all" : "none",
         }}
         tabIndex="-1"
       >
@@ -41,12 +29,12 @@ const Modal = (props) => {
                 className="close"
                 data-dismiss="modal"
                 aria-label="Close"
-                onClick={hideModal}
+                onClick={props.hideModal}
               >
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-            {props.children(hideModal)}
+            {props.children}
           </div>
         </div>
       </div>
@@ -63,23 +51,21 @@ const ModalFooter = ({ children }) => (
 );
 
 Modal.propTypes = {
-  toggleButtonContent: PropTypes.element.isRequired,
-  toggleButtonType: PropTypes.string,
+  /** Whether to show modal or not */
+  active: PropTypes.bool.isRequired,
+  /** Function to hide modal (turn `active` to false) */
+  hideModal: PropTypes.func.isRequired,
+  /** Modal title */
   title: PropTypes.string.isRequired,
-  children: PropTypes.func.isRequired,
+  /** Modal content */
+  children: PropTypes.node.isRequired,
 };
 
 ModalBody.propTypes = {
-  children: PropTypes.oneOfType([
-    PropTypes.arrayOf(PropTypes.node),
-    PropTypes.node,
-  ]).isRequired,
+  children: PropTypes.node.isRequired,
 };
 ModalFooter.propTypes = {
-  children: PropTypes.oneOfType([
-    PropTypes.arrayOf(PropTypes.node),
-    PropTypes.node,
-  ]).isRequired,
+  children: PropTypes.node.isRequired,
 };
 
 export default Modal;

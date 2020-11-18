@@ -1,40 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
 import Modal, { ModalBody, ModalFooter } from "./Modal";
 import EditEvent from "../Calendar/EditEvent";
 
 function AddEntryModal() {
+  const [active, setActive] = useState(false);
+
+  const hideModal = () => setActive(false);
+
   return (
-    <Modal
-      className="modal"
-      toggleButtonContent={
-        <>
-          <i className="fa fa-plus-circle"></i> Add event
-        </>
-      }
-      toggleButtonType="success"
-      title="Add event"
-    >
-      {(hideModal) => (
-        <>
-          <ModalBody>
-            <EditEvent onSubmit={hideModal} />
-          </ModalBody>
-          <ModalFooter>
-            <button
-              type="button"
-              className="btn btn-secondary"
-              data-dismiss="modal"
-              onClick={hideModal}
-            >
-              Close
-            </button>
-            <button type="button" className="btn btn-primary">
-              Save changes
-            </button>
-          </ModalFooter>
-        </>
-      )}
-    </Modal>
+    <>
+      <button className="btn btn-success" onClick={() => setActive(true)}>
+        <i className="fa fa-plus-circle"></i> Add event
+      </button>
+      <Modal title="New event" active={active} hideModal={hideModal}>
+        <ModalBody>
+          <EditEvent onSubmit={hideModal} />
+        </ModalBody>
+      </Modal>
+    </>
   );
 }
 

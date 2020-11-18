@@ -30,6 +30,7 @@ const types = gql`
     events(
       user: ID
     ): [Event!]!
+    event(_id: ID): Event
   }
 
   type Mutation {
@@ -51,6 +52,8 @@ const types = gql`
       time: Int!
       notes: String
     ): Event
+
+    deleteEvent(_id: ID!): Boolean!
   }
 `;
 

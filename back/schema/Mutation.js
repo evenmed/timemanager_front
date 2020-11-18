@@ -85,14 +85,39 @@ module.exports = {
       );
     }
 
-    if (args._id && event.user !== ctx.req.user._id) {
-      // User doesn't own event, make sure it's an admin
-      isLoggedIn(ctx, ["ADMIN"]);
+    if (args._id) {
+      if (String(event.user) !== ctx.req.user._id) {
+        // User doesn't own event, make sure it's an admin
+        isLoggedIn(ctx, ["ADMIN"]);
+      }
+
+      event.title = args.title;
+      event.date = args.date;
+      event.time = args.time;
+      event.notes = args.notes;
     }
 
     await event.save();
-    // await event.populate("user").execPopulate();
 
     return event.populate("user").execPopulate();
+  },
+
+  deleteEvent: async (_parent, { _id }, ctx) => {
+    isLoggedIn(ctx);
+
+    const user = isLoggedIn(ctx, ["ADMIN"], true)
+      ? { $ne: null }
+      : ctx.req.user._id;
+
+    const res = await Event.deleteOne({
+      _id,
+      user,
+    });
+
+    if (res.deletedCount > 0) return true;
+
+    throw new Error(
+      "Couldn't delete event. The event may not exist, or you may not be authorized to delete it."
+    );
   },
 };

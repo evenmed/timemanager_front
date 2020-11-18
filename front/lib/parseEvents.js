@@ -16,15 +16,16 @@ export default function parseEvents(events) {
 
   if (!events || !events.length) return [[], totalMinsByDate];
 
-  const parsedEvents = events.map(({ date, title, time, notes }) => {
+  const parsedEvents = events.map(({ _id, date, title, time, notes }) => {
     const startMins = totalMinsByDate[date] || 0;
     const endMins = parseInt(startMins) + parseInt(time);
 
     totalMinsByDate[date] = endMins;
 
     return {
-      start: `${date}T${minsToString(startMins)}`,
-      end: `${date}T${minsToString(endMins)}`,
+      id: _id,
+      start: `${date}T${minsToString(startMins)}:00`,
+      end: `${date}T${minsToString(endMins)}:00`,
       title: `(${minutesToHours(time)} h) ${title}`,
       extendedProps: { notes },
     };
