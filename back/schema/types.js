@@ -28,6 +28,12 @@ const types = gql`
 
   type Query {
     me: User
+    user(_id: ID!): User!
+    users(
+      limit: Int
+      offset: Int
+    ): [User!]!
+
     events(
       user: ID
     ): [Event!]!
@@ -49,6 +55,7 @@ const types = gql`
       userId: ID!
       username: String!
       preferredWorkTime: Int!
+      permissions: [Permission!]
     ): User!
 
     updateEvent(

@@ -22,24 +22,26 @@ function MyApp({ Component, pageProps }) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <ApolloProvider client={client}>
-        <User>
-          {(isLoggedIn) => (
-            <div className="container pt-4">
-              <div className="row">
-                <div className="col-12">
-                  <Nav />
+        <div className="container pt-4">
+          <User>
+            {(isLoggedIn) => (
+              <>
+                <div className="row">
+                  <div className="col-12">
+                    <Nav />
+                  </div>
                 </div>
-              </div>
-              {isLoggedIn ? (
-                <Component {...pageProps} />
-              ) : (
-                <div className="row justify-content-md-center">
-                  <LogInRegister />
-                </div>
-              )}
-            </div>
-          )}
-        </User>
+                {isLoggedIn ? (
+                  <Component {...pageProps} />
+                ) : (
+                  <div className="row justify-content-md-center">
+                    <LogInRegister />
+                  </div>
+                )}
+              </>
+            )}
+          </User>
+        </div>
       </ApolloProvider>
     </>
   );

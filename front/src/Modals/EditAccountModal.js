@@ -2,33 +2,35 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 
 import Modal, { ModalBody } from "./Modal";
-import EditEvent from "../Calendar/EditEvent";
+import EditAccount from "../User/EditAccount";
 
-function EditEventModal(props) {
+function EditAccountModal(props) {
   const [active, setActive] = useState(false);
-  const [eventId, setEventId] = useState("");
-  const showModal = (id) => {
+  const [userId, setUserId] = useState("");
+
+  const showModal = (id = "") => {
     setActive(true);
 
     // Prevent event objects or anything else from being set as id
-    if (typeof id === "string") setEventId(id);
+    if (typeof id === "string") setUserId(id);
   };
+
   const hideModal = () => setActive(false);
 
   return (
     <>
       {props.children(showModal, hideModal)}
-      <Modal title="Edit event" active={active} hideModal={hideModal}>
+      <Modal title="Edit Account" active={active} hideModal={hideModal}>
         <ModalBody>
-          <EditEvent eventId={eventId} onSubmit={hideModal} />
+          <EditAccount userId={userId} onSubmit={hideModal} />
         </ModalBody>
       </Modal>
     </>
   );
 }
 
-EditEventModal.propTypes = {
+EditAccountModal.propTypes = {
   children: PropTypes.func.isRequired,
 };
 
-export default EditEventModal;
+export default EditAccountModal;

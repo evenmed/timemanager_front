@@ -19,7 +19,7 @@ const DisplayError = ({ error }) => {
       <div
         key={i}
         data-test="graphql-error"
-        className="alert alert-danger my-4"
+        className="alert alert-danger my-3"
       >
         <strong>Error: </strong>
         {formatErrorMessage(error.message)}

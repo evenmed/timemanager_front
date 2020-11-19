@@ -13,6 +13,28 @@ module.exports = {
   },
 
   /**
+   * Get a single user by ID
+   */
+  user: (_parent, { _id }, ctx) => {
+    isLoggedIn(ctx);
+
+    if (_id !== ctx.req.user._id) {
+      isLoggedIn(ctx, ["ADMIN", "USERMANAGER"]);
+    }
+
+    return User.findById(_id);
+  },
+
+  /**
+   * Get a list of users
+   */
+  users: (_parent, { limit = 20, offset = 0 }, ctx) => {
+    isLoggedIn(ctx, ["ADMIN", "USERMANAGER"]);
+
+    return User.find().limit(limit).skip(offset);
+  },
+
+  /**
    * Query events by user
    */
   events: async (_parent, { user }, ctx) => {

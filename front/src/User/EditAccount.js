@@ -1,11 +1,13 @@
 import React, { useContext } from "react";
 import { useMutation, useQuery, gql } from "@apollo/client";
-import { Formik } from "formik";
+import { Formik, Field } from "formik";
 import InputMask from "react-input-mask";
 import PropTypes from "prop-types";
 
 import { UserContext } from "./User";
+import CheckPermission from "./CheckPermission";
 import Error from "../helpers/Error";
+import Loading from "../helpers/Loading";
 import readableTimeString from "../../lib/readableTimeString";
 import timeStringToMinutes from "../../lib/timeStringToMinutes";
 import minutesToTimeString from "../../lib/minutesToTimeString";
@@ -15,29 +17,57 @@ const UPDATE_ACCOUNT_MUTATION = gql`
     $userId: ID!
     $username: String!
     $preferredWorkTime: Int!
+    $permissions: [Permission!]
   ) {
     updateAccount(
       userId: $userId
       username: $username
       preferredWorkTime: $preferredWorkTime
+      permissions: $permissions
     ) {
       _id
     }
   }
 `;
 
+const SINGLE_USER_QUERY = gql`
+  query user($_id: ID!) {
+    user(_id: $_id) {
+      _id
+      username
+      permissions
+      preferredWorkTime
+    }
+  }
+`;
+
 const EditAccount = (props) => {
-  const user = useContext(UserContext);
+  const currentUser = useContext(UserContext);
+
   const [
     updateAccount,
     { error, loading },
-  ] = useMutation(UPDATE_ACCOUNT_MUTATION, { refetchQueries: ["me"] });
+  ] = useMutation(UPDATE_ACCOUNT_MUTATION, { refetchQueries: ["me", "users"] });
+
+  const { data, error: queryError, loading: queryLoading } = useQuery(
+    SINGLE_USER_QUERY,
+    {
+      variables: { _id: props.userId || currentUser._id },
+      fetchPolicy: "network-only",
+    }
+  );
+
+  if (queryLoading) return <Loading text="Fetching user..." />;
+  if (queryError) return <Error error={error} />;
+
+  const { user } = data;
 
   return (
     <Formik
       initialValues={{
         username: user.username,
         preferredWorkTime: minutesToTimeString(user.preferredWorkTime),
+        permissions: user.permissions,
       }}
       validate={(values) => {
         const errors = {};
@@ -59,6 +89,10 @@ const EditAccount = (props) => {
             username: values.username,
             preferredWorkTime: timeStringToMinutes(values.preferredWorkTime),
             userId: props.userId || user._id,
+            // Only admins can edit permissions
+            permissions: currentUser.permissions.includes("ADMIN")
+              ? values.permissions
+              : null,
           },
         })
           .then((res) => {
@@ -83,12 +117,12 @@ const EditAccount = (props) => {
         <form onSubmit={handleSubmit}>
           <Error error={error} />
           <div className="form-group">
-            <label htmlFor="editUsername">Username</label>
+            <label htmlFor={`${user._id}-editUsername`}>Username</label>
             <input
               type="text"
               className="form-control"
               name="username"
-              id="editUsername"
+              id={`${user._id}-editUsername`}
               autoComplete="username"
               onChange={handleChange}
               onBlur={handleBlur}
@@ -100,13 +134,15 @@ const EditAccount = (props) => {
           </div>
 
           <div className="form-group">
-            <label htmlFor="editPwt">Daily work objective (HH:MM)</label>
+            <label htmlFor={`${user._id}-editPwt`}>
+              Daily work objective (HH:MM)
+            </label>
             <InputMask
               mask="99:99"
               alwaysShowMask={true}
               className="form-control"
               name="preferredWorkTime"
-              id="editPwt"
+              id={`${user._id}-editPwt`}
               autoComplete="off"
               onChange={handleChange}
               onBlur={handleBlur}
@@ -122,6 +158,28 @@ const EditAccount = (props) => {
               <p className="text-danger">{errors.preferredWorkTime}</p>
             )}
           </div>
+
+          <CheckPermission permission={["ADMIN"]}>
+            <div>
+              <strong>Permissions:</strong>
+            </div>
+            <div>
+              <label>
+                <Field type="checkbox" name="permissions" value="USER" /> USER
+              </label>
+            </div>
+            <div>
+              <label>
+                <Field type="checkbox" name="permissions" value="USERMANAGER" />{" "}
+                USERMANAGER
+              </label>
+            </div>
+            <div>
+              <label>
+                <Field type="checkbox" name="permissions" value="ADMIN" /> ADMIN
+              </label>
+            </div>
+          </CheckPermission>
 
           <button
             className="btn btn-success btn-block"

@@ -9,8 +9,8 @@ module.exports = {
   createUser: async (_parent, { username, password, permissions }, ctx) => {
     // console.log(ctx);
     if (permissions && permissions.length) {
-      // Setting custom permissions, make sure it's an admin or UM
-      isLoggedIn(ctx, ["ADMIN", "USERMANAGER"]);
+      // Setting custom permissions, make sure it's an admin
+      isLoggedIn(ctx, ["ADMIN"]);
     } else {
       permissions = ["USER"];
     }
@@ -60,19 +60,29 @@ module.exports = {
     return true;
   },
 
-  updateAccount: (_parent, { userId, username, preferredWorkTime }, ctx) => {
+  updateAccount: (
+    _parent,
+    { userId, username, preferredWorkTime, permissions },
+    ctx
+  ) => {
     isLoggedIn(ctx);
+
+    const update = { username, preferredWorkTime };
 
     if (userId !== ctx.req.user._id) {
       // Updating someone else's account
       isLoggedIn(ctx, ["ADMIN", "USERMANAGER"]);
     }
 
-    return User.findOneAndUpdate(
-      { _id: userId },
-      { username, preferredWorkTime },
-      { runValidators: true }
-    );
+    if (permissions && permissions.length) {
+      // Trying to assign permissions, make sure it's an admin
+      isLoggedIn(ctx, ["ADMIN"]);
+      update.permissions = permissions;
+    }
+
+    return User.findOneAndUpdate({ _id: userId }, update, {
+      runValidators: true,
+    });
   },
 
   updateEvent: async (_parent, args, ctx) => {

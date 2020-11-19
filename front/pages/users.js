@@ -1,10 +1,12 @@
 import React from "react";
+import CheckPermission from "../src/User/CheckPermission";
+import ManageUsers from "../src/User/ManageUsers";
 
 const users = () => {
   return (
-    <div>
-      <p>Users!</p>
-    </div>
+    <CheckPermission permission={["ADMIN", "USERMANAGER"]} showError={true}>
+      <ManageUsers />
+    </CheckPermission>
   );
 };
 

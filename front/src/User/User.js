@@ -2,6 +2,7 @@ import { useQuery, gql } from "@apollo/client";
 import PropTypes from "prop-types";
 import { createContext } from "react";
 import Error from "../helpers/Error";
+import Loading from "../helpers/Loading";
 
 const CURRENT_USER_QUERY = gql`
   query me {
@@ -23,11 +24,11 @@ const UserContext = createContext(false);
 const User = (props) => {
   const { loading, error, data } = useQuery(CURRENT_USER_QUERY);
 
-  if (loading) return <p>Authenticating...</p>;
+  if (loading) return <Loading text="Authenticating..." />;
   if (error) return <Error error={error} />;
 
   return (
-    <UserContext.Provider value={data.me}>
+    <UserContext.Provider value={data.me || {}}>
       {props.children(data.me ? true : false)}
     </UserContext.Provider>
   );

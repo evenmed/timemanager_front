@@ -13,6 +13,7 @@ import "@fullcalendar/timegrid/main.css";
 import "@fullcalendar/list/main.css";
 
 import Error from "../helpers/Error";
+import Loading from "../helpers/Loading";
 import parseEvents from "../../lib/parseEvents";
 import dateObjectToString from "../../lib/dateObjectToString";
 import minutesToHours from "../../lib/minutesToHours";
@@ -39,7 +40,7 @@ function Calendar() {
     },
   });
 
-  if (loading) return <p>Loading events...</p>;
+  if (loading) return <Loading />;
   if (error) return <Error error={error} />;
 
   const [events, minutesByDate] = parseEvents(data ? data.events : undefined);
@@ -47,7 +48,7 @@ function Calendar() {
   return (
     <div className="col-12">
       <EditEventModal>
-        {(showModal, hideModal) => (
+        {(showModal) => (
           <FullCalendar
             defaultView="timeGridWeek"
             header={{
