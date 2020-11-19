@@ -21,6 +21,7 @@ if (isDev) {
       useNewUrlParser: true,
       useCreateIndex: true,
       useUnifiedTopology: true,
+      useFindAndModify: false,
       connectTimeoutMS: 4000,
     }
   );
@@ -35,6 +36,7 @@ if (isDev) {
       useNewUrlParser: true,
       useCreateIndex: true,
       useUnifiedTopology: true,
+      useFindAndModify: false,
       connectTimeoutMS: 4000,
     }
   );
@@ -82,6 +84,7 @@ app.use(async (req, _res, next) => {
     _id: String(user._id),
     username: user.username,
     permissions: user.permissions,
+    preferredWorkTime: user.preferredWorkTime,
   };
   next();
 });

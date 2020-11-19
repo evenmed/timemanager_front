@@ -17,11 +17,19 @@ function Index() {
         <h1 className="col-12">Ultimate Time Manager</h1>
       </div>
       <User>
-        {(me) =>
-          me ? (
+        {(isLoggedIn) =>
+          isLoggedIn ? (
             <>
-              <div className="mt-3 mb-4 row">
-                <AddEntryModal /> <SettingsModal /> <LogOut />
+              <div className="mt-3 mb-4 row justify-content-between">
+                <div className="col-auto">
+                  <SettingsModal />
+                </div>
+                <div className="col-auto">
+                  <AddEntryModal />
+                </div>
+                <div className="col-auto">
+                  <LogOut />
+                </div>
               </div>
               <div className="row justify-content-md-center">
                 <DynamicCalendar />

@@ -11,8 +11,8 @@ const UserSchema = new Schema({
     unique: true,
     lowercase: true,
     trim: true,
-    validate: [validator.isEmail, "Please enter a valid email"],
-    required: "Please enter a valid email",
+    minlength: [3, "Username must be at least 3 characters"],
+    required: "Please enter a valid username",
   },
   permissions: [
     {
@@ -21,6 +21,13 @@ const UserSchema = new Schema({
       required: "Users need at least 1 permission",
     },
   ],
+  preferredWorkTime: {
+    type: Number,
+    min: [15, "Daily work objective must be at least 15 minutes"],
+    max: [1440, "Daily work objective can't be greater than 24 hours"],
+    default: 480,
+    required: "Please specify your preferred work time",
+  },
 });
 
 UserSchema.plugin(passportLocalMongoose);

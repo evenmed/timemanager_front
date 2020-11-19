@@ -9,11 +9,11 @@ const DELETE_EVENT_MUTATION = gql`
   }
 `;
 
-const DeleteEvent = ({ eventId, onSubmit }) => {
+const DeleteEvent = ({ eventId, onSubmit: onCompleted }) => {
   const [deleteEvent, { loading, error }] = useMutation(DELETE_EVENT_MUTATION, {
     variables: { _id: eventId },
     refetchQueries: ["events"],
-    onCompleted: onSubmit,
+    onCompleted,
   });
 
   return (

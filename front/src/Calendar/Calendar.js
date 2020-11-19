@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useContext } from "react";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
@@ -17,6 +17,7 @@ import parseEvents from "../../lib/parseEvents";
 import dateObjectToString from "../../lib/dateObjectToString";
 import minutesToHours from "../../lib/minutesToHours";
 import EditEventModal from "../Modals/EditEventModal";
+import { UserContext } from "../User/User";
 
 const EVENTS_QUERY = gql`
   query events($user: ID) {
@@ -30,10 +31,13 @@ const EVENTS_QUERY = gql`
   }
 `;
 
-const preferredWorkTime = 480; // minutes (8 hours)
-
 function Calendar() {
-  const { loading, error, data } = useQuery(EVENTS_QUERY);
+  const { _id, preferredWorkTime } = useContext(UserContext); // minutes (8 hours)
+  const { loading, error, data } = useQuery(EVENTS_QUERY, {
+    variables: {
+      user: _id,
+    },
+  });
 
   if (loading) return <p>Loading events...</p>;
   if (error) return <Error error={error} />;

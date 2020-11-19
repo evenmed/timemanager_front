@@ -4,8 +4,8 @@ import { useMutation, gql } from "@apollo/client";
 import Error from "../helpers/Error";
 
 const LOG_IN_MUTATION = gql`
-  mutation logIn($email: String!, $password: String!) {
-    logIn(username: $email, password: $password) {
+  mutation logIn($username: String!, $password: String!) {
+    logIn(username: $username, password: $password) {
       username
     }
   }
@@ -13,7 +13,7 @@ const LOG_IN_MUTATION = gql`
 
 function LogIn(props) {
   const [logIn, { error, loading }] = useMutation(LOG_IN_MUTATION, {
-    refetchQueries: ["me"],
+    refetchQueries: ["me", "events"],
     awaitRefetchQueries: true,
   });
 
@@ -21,7 +21,7 @@ function LogIn(props) {
     <div>
       <h3>Log In</h3>
       <Formik
-        initialValues={{ email: "", password: "" }}
+        initialValues={{ username: "", password: "" }}
         onSubmit={(values, { setSubmitting }) => {
           logIn({ variables: values })
             .then((res) => {
@@ -45,16 +45,16 @@ function LogIn(props) {
           <form onSubmit={handleSubmit}>
             <Error error={error} />
             <div className="form-group">
-              <label htmlFor="logInEmail">Email address</label>
+              <label htmlFor="logInUsername">Username</label>
               <input
-                type="email"
+                type="username"
                 className="form-control"
-                name="email"
-                id="logInEmail"
-                autoComplete="email"
+                name="username"
+                id="logInUsername"
+                autoComplete="username"
                 onChange={handleChange}
                 onBlur={handleBlur}
-                value={values.email}
+                value={values.username}
               />
             </div>
             <div className="form-group">
