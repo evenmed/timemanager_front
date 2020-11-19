@@ -1,9 +1,5 @@
 import dynamic from "next/dynamic";
 import AddEntryModal from "./Modals/AddEntryModal";
-import SettingsModal from "./Modals/SettingsModal";
-import User from "./User/User";
-import LogOut from "./User/LogOut";
-import LogInRegister from "./User/LogInRegister";
 
 // Don't SSR the calendar, as fullcalendar doesn't support it
 const DynamicCalendar = dynamic(() => import("./Calendar/Calendar"), {
@@ -12,37 +8,16 @@ const DynamicCalendar = dynamic(() => import("./Calendar/Calendar"), {
 
 function Index() {
   return (
-    <div className="container pt-4">
-      <div className="row">
-        <h1 className="col-12">Ultimate Time Manager</h1>
+    <>
+      <div className="mt-3 mb-4 row justify-content-center">
+        <div className="col-auto">
+          <AddEntryModal />
+        </div>
       </div>
-      <User>
-        {(isLoggedIn) =>
-          isLoggedIn ? (
-            <>
-              <div className="mt-3 mb-4 row justify-content-between">
-                <div className="col-auto">
-                  <SettingsModal />
-                </div>
-                <div className="col-auto">
-                  <AddEntryModal />
-                </div>
-                <div className="col-auto">
-                  <LogOut />
-                </div>
-              </div>
-              <div className="row justify-content-md-center">
-                <DynamicCalendar />
-              </div>
-            </>
-          ) : (
-            <div className="row justify-content-md-center">
-              <LogInRegister />
-            </div>
-          )
-        }
-      </User>
-    </div>
+      <div className="row justify-content-md-center">
+        <DynamicCalendar />
+      </div>
+    </>
   );
 }
 

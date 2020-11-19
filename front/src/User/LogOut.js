@@ -16,8 +16,7 @@ const LogOut = () => {
 
   return (
     <button disabled={loading} className="btn btn-danger" onClick={logOut}>
-      <i className="fa fa-sign-out"></i>{" "}
-      {loading ? "Logging out..." : "Log out"}
+      <i className="fa fa-sign-out"></i> Log out
     </button>
   );
 };

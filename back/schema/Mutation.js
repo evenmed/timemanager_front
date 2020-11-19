@@ -70,7 +70,8 @@ module.exports = {
 
     return User.findOneAndUpdate(
       { _id: userId },
-      { username, preferredWorkTime }
+      { username, preferredWorkTime },
+      { runValidators: true }
     );
   },
 
