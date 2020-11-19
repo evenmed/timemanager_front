@@ -7,7 +7,7 @@ const DisplayError = ({ error }) => {
   const formatErrorMessage = (msg) => {
     // Remove everything before ":"
     const parts = msg.split(":");
-    return parts[parts.length - 1].replace("username", "email");
+    return parts[parts.length - 1];
   };
 
   if (

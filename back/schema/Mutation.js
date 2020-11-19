@@ -60,6 +60,20 @@ module.exports = {
     return true;
   },
 
+  updateAccount: (_parent, { userId, username, preferredWorkTime }, ctx) => {
+    isLoggedIn(ctx);
+
+    if (userId !== ctx.req.user._id) {
+      // Updating someone else's account
+      isLoggedIn(ctx, ["ADMIN", "USERMANAGER"]);
+    }
+
+    return User.findOneAndUpdate(
+      { _id: userId },
+      { username, preferredWorkTime }
+    );
+  },
+
   updateEvent: async (_parent, args, ctx) => {
     isLoggedIn(ctx);
 

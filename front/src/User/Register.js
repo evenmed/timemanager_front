@@ -4,8 +4,8 @@ import { useMutation, gql } from "@apollo/client";
 import Error from "../helpers/Error";
 
 const REGISTER_MUTATION = gql`
-  mutation register($email: String!, $password: String!) {
-    createUser(username: $email, password: $password) {
+  mutation register($username: String!, $password: String!) {
+    createUser(username: $username, password: $password) {
       _id
     }
   }
@@ -21,7 +21,7 @@ function Register(props) {
     <div>
       <h3>Register</h3>
       <Formik
-        initialValues={{ email: "", password: "", passwordConfirm: "" }}
+        initialValues={{ username: "", password: "", passwordConfirm: "" }}
         validate={(values) => {
           const errors = {};
           if (
@@ -59,18 +59,20 @@ function Register(props) {
           <form onSubmit={handleSubmit}>
             <Error error={error} />
             <div className="form-group">
-              <label htmlFor="registerEmail">Email address</label>
+              <label htmlFor="registerUsername">Username</label>
               <input
-                type="email"
+                type="text"
                 className="form-control"
-                name="email"
-                id="registerEmail"
+                name="username"
+                id="registerUsername"
                 autoComplete="username"
                 onChange={handleChange}
                 onBlur={handleBlur}
-                value={values.email}
+                value={values.username}
               />
-              {errors.email && <p className="text-danger">{errors.email}</p>}
+              {errors.username && (
+                <p className="text-danger">{errors.username}</p>
+              )}
             </div>
             <div className="form-group">
               <label htmlFor="registerPassword">Password</label>

@@ -14,6 +14,7 @@ const types = gql`
     _id: ID!
     username: String!
     permissions: [Permission!]!
+    preferredWorkTime: Int!
   }
   
   type Event {
@@ -44,6 +45,11 @@ const types = gql`
       password: String!
     ): User
     logOut: Boolean
+    updateAccount(
+      userId: ID!
+      username: String!
+      preferredWorkTime: Int!
+    ): User!
 
     updateEvent(
       _id: ID
