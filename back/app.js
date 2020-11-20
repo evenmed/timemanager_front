@@ -53,6 +53,9 @@ require("./models/Event");
 // Initialize express app
 const app = express();
 
+// Necessary for Heroku cookies to work (?)
+app.enable("trust proxy");
+
 // CORS
 app.use(
   cors({

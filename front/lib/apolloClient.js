@@ -4,7 +4,7 @@ const link = createHttpLink({
   uri:
     process.env.NODE_ENV === "development"
       ? "http://localhost:4000/graphql"
-      : "http://tmback.emiliovenegas.me/graphql",
+      : "https://timemanager-back.herokuapp.com/graphql",
   credentials: "include",
 });
 
