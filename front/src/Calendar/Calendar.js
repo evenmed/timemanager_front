@@ -12,6 +12,7 @@ import "@fullcalendar/daygrid/main.css";
 import "@fullcalendar/timegrid/main.css";
 import "@fullcalendar/list/main.css";
 
+import CalendarBgStyles from "./CalendarBgStyles";
 import Error from "../helpers/Error";
 import Loading from "../helpers/Loading";
 import parseEvents from "../../lib/parseEvents";
@@ -47,6 +48,12 @@ function Calendar() {
 
   return (
     <div className="col-12">
+      {/* Inline style to set rows / days background color */}
+      <CalendarBgStyles
+        minutesByDate={minutesByDate}
+        preferredWorkTime={preferredWorkTime}
+      />
+
       <EditEventModal>
         {(showModal) => (
           <FullCalendar
@@ -82,40 +89,6 @@ function Calendar() {
               return `(${hours} hours total)`;
             }}
             scrollTime="00:00:00"
-            dayRender={({ date, el }) => {
-              // Remove default background color
-              el.classList.remove("alert-info");
-              el.classList.remove("alert");
-
-              // Get mins worked on date
-              const dateString = dateObjectToString(date);
-              const totalMins = minutesByDate[dateString] || 0;
-
-              // Set bg color based on if worked over preferred work time
-              if (totalMins >= preferredWorkTime)
-                el.classList.add("bg-success");
-              else el.classList.add("bg-danger");
-
-              el.classList.add("op-5");
-
-              return el;
-            }}
-            datesRender={({ el, view }) => {
-              // List view doesn't call dayRender, so we need to use this
-              if (view.type !== "listWeek") return;
-
-              el.querySelectorAll(".fc-list-heading").forEach((dateHeading) => {
-                const dateString = dateHeading.dataset.date;
-                const totalMins = minutesByDate[dateString] || 0;
-
-                // Set bg color based on if worked over preferred work time
-                if (totalMins >= preferredWorkTime)
-                  dateHeading.classList.add("bg-success");
-                else dateHeading.classList.add("bg-danger");
-              });
-
-              return el;
-            }}
           />
         )}
       </EditEventModal>
