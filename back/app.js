@@ -108,7 +108,7 @@ server.applyMiddleware({ app, cors: false });
 const port = process.env.PORT;
 
 app.listen({ port }, () => {
-  console.log(`🚀  Server ready on port ${port}`);
+  console.log(`🚀🤠  Server ready on port ${port}`);
   if (isDev)
     console.log(`Playground: http://localhost:${port}${server.graphqlPath}`);
 });
