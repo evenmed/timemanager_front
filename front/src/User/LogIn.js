@@ -1,20 +1,19 @@
 import { Formik } from "formik";
-import { useMutation, gql } from "@apollo/client";
+import { useMutation, useLazyQuery, gql } from "@apollo/client";
 
+import { CURRENT_USER_QUERY } from "./User";
 import Error from "../helpers/Error";
 
 const LOG_IN_MUTATION = gql`
   mutation logIn($username: String!, $password: String!) {
-    logIn(username: $username, password: $password) {
-      username
-    }
+    logIn(username: $username, password: $password)
   }
 `;
 
 function LogIn(props) {
-  const [logIn, { error, loading }] = useMutation(LOG_IN_MUTATION, {
-    refetchQueries: ["me", "events"],
-    awaitRefetchQueries: true,
+  const [logIn, { error, loading }] = useMutation(LOG_IN_MUTATION);
+  const [refreshUser] = useLazyQuery(CURRENT_USER_QUERY, {
+    fetchPolicy: "network-only",
   });
 
   return (
@@ -22,16 +21,18 @@ function LogIn(props) {
       <h3>Log In</h3>
       <Formik
         initialValues={{ username: "", password: "" }}
-        onSubmit={(values, { setSubmitting }) => {
+        onSubmit={(values) =>
           logIn({ variables: values })
             .then((res) => {
-              setSubmitting(false);
+              if (res && res.data && res.data.logIn) {
+                localStorage.setItem("token", res.data.logIn);
+                refreshUser();
+              }
             })
             .catch((e) => {
-              setSubmitting(false);
               console.error(e);
-            });
-        }}
+            })
+        }
       >
         {({
           values,

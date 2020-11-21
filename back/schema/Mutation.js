@@ -1,8 +1,8 @@
 const mongoose = require("mongoose");
-const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 const Event = require("../models/Event");
 const isLoggedIn = require("../lib/isLoggedIn");
+const generateToken = require("../lib/generateToken");
 const isValidDateString = require("../lib/isValidDateString");
 
 module.exports = {
@@ -23,16 +23,8 @@ module.exports = {
     });
 
     // Generate JWT token
-    const token = jwt.sign({ userId: user._id }, process.env.APP_SECRET);
-
-    // Set the cookie
-    ctx.res.cookie("token", token, {
-      httpOnly: true,
-      maxAge: 1000 * 60 * 60 * 24 * 31,
-    });
-
-    // Return user
-    return user;
+    const token = generateToken({ userId: user._id });
+    return token;
   },
 
   logIn: async (_parent, { username, password }, ctx) => {
@@ -40,24 +32,8 @@ module.exports = {
     if (!user) throw new Error("Invalid credentials. Please try again.");
 
     // Generate JWT token
-    const token = jwt.sign({ userId: user._id }, process.env.APP_SECRET);
-
-    // Set the cookie
-    ctx.res.cookie("token", token, {
-      httpOnly: true,
-      maxAge: 1000 * 60 * 60 * 24 * 31,
-    });
-
-    // Return user
-    return user;
-  },
-
-  logOut: async (_parent, _args, ctx) => {
-    // Delete the cookie
-    ctx.res.clearCookie("token");
-
-    // Return user
-    return true;
+    const token = generateToken({ userId: user._id });
+    return token;
   },
 
   updateAccount: (

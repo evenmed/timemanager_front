@@ -4,7 +4,6 @@ const jwt = require("jsonwebtoken");
 const { ApolloServer } = require("apollo-server-express");
 const express = require("express");
 const passport = require("passport");
-const cookieParser = require("cookie-parser");
 const cors = require("cors");
 
 const resolvers = require("./schema/resolvers");
@@ -53,9 +52,6 @@ require("./models/Event");
 // Initialize express app
 const app = express();
 
-// Necessary for Heroku cookies to work (?)
-app.enable("trust proxy");
-
 // CORS
 app.use(
   cors({
@@ -64,15 +60,28 @@ app.use(
   })
 );
 
-// Enable cookies
-app.use(cookieParser());
-
 // decode JWT to get userid
-app.use((req, _res, next) => {
-  const { token } = req.cookies;
-  if (token) {
-    const { userId } = jwt.verify(token, process.env.APP_SECRET);
-    req.userId = userId;
+app.use((req, res, next) => {
+  const authorizationHeader = req.get("authorization");
+
+  if (authorizationHeader) {
+    let userId;
+    try {
+      const verify = jwt.verify(
+        authorizationHeader.replace("Bearer ", ""),
+        process.env.APP_SECRET,
+        {
+          maxAge: "30 days",
+        }
+      );
+      userId = verify.userId;
+    } catch (e) {
+      return next(); // Invalid token, just don't log them in
+    }
+
+    if (userId) {
+      req.userId = userId;
+    }
   }
   next();
 });

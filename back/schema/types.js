@@ -45,12 +45,12 @@ const types = gql`
       username: String!,
       password: String!,
       permissions: [Permission!]
-    ): User
+    ): String! # JWT token
     logIn(
       username: String!,
       password: String!
-    ): User
-    logOut: Boolean
+    ): String! # JWT token
+    # No logOut mutation because it's done through localStorage token
     updateAccount(
       userId: ID!
       username: String!

@@ -13,6 +13,7 @@ const DisplayError = ({ error }) => {
   if (
     error.networkError &&
     error.networkError.result &&
+    error.networkError.result.errors &&
     error.networkError.result.errors.length
   ) {
     return error.networkError.result.errors.map((error, i) => (

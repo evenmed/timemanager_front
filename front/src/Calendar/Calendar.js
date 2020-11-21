@@ -5,7 +5,7 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import listPlugin from "@fullcalendar/list";
 import momentPlugin from "@fullcalendar/moment";
 import bootstrapPlugin from "@fullcalendar/bootstrap";
-import { useQuery, gql } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 
 import "@fullcalendar/core/main.css";
 import "@fullcalendar/daygrid/main.css";
@@ -20,18 +20,9 @@ import dateObjectToString from "../../lib/dateObjectToString";
 import minutesToHours from "../../lib/minutesToHours";
 import EditEventModal from "../Modals/EditEventModal";
 import { UserContext } from "../User/User";
-
-const EVENTS_QUERY = gql`
-  query events($user: ID) {
-    events(user: $user) {
-      _id
-      date
-      time
-      title
-      notes
-    }
-  }
-`;
+// We load this query from another file bc Calendar is dynamically rendered
+// and the query needs to be imported by more components
+import EVENTS_QUERY from "./EventsQuery";
 
 function Calendar() {
   const { _id, preferredWorkTime } = useContext(UserContext); // minutes (8 hours)
@@ -41,7 +32,7 @@ function Calendar() {
     },
   });
 
-  if (loading) return <Loading />;
+  if (loading || typeof window === "undefined") return <Loading />;
   if (error) return <Error error={error} />;
 
   const [events, minutesByDate] = parseEvents(data ? data.events : undefined);
