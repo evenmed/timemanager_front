@@ -1,13 +1,23 @@
 import { Formik } from "formik";
-import { useMutation, gql } from "@apollo/client";
+import InputMask from "react-input-mask";
+import { useMutation, useLazyQuery, gql } from "@apollo/client";
 
+import { CURRENT_USER_QUERY } from "./User";
 import Error from "../helpers/Error";
+import readableTimeString from "../../lib/readableTimeString";
+import timeStringToMinutes from "../../lib/timeStringToMinutes";
 
 const REGISTER_MUTATION = gql`
-  mutation register($username: String!, $password: String!) {
-    createUser(username: $username, password: $password) {
-      _id
-    }
+  mutation register(
+    $username: String!
+    $preferredWorkTime: Int!
+    $password: String!
+  ) {
+    createUser(
+      username: $username
+      preferredWorkTime: $preferredWorkTime
+      password: $password
+    )
   }
 `;
 
@@ -17,11 +27,20 @@ function Register(props) {
     awaitRefetchQueries: true,
   });
 
+  const [refreshUser] = useLazyQuery(CURRENT_USER_QUERY, {
+    fetchPolicy: "network-only",
+  });
+
   return (
     <div>
       <h3>Register</h3>
       <Formik
-        initialValues={{ username: "", password: "", passwordConfirm: "" }}
+        initialValues={{
+          username: "",
+          preferredWorkTime: "08:00",
+          password: "",
+          passwordConfirm: "",
+        }}
         validate={(values) => {
           const errors = {};
           if (
@@ -31,21 +50,35 @@ function Register(props) {
           ) {
             errors.passwordConfirm = "Passwords do not match";
           }
+
+          if (values.preferredWorkTime) {
+            const mins = timeStringToMinutes(values.preferredWorkTime);
+
+            if (mins < 15 || mins > 1440)
+              errors.preferredWorkTime =
+                "Daily work objective must be between 15 mins and 24 hours";
+          }
           return errors;
         }}
         validateOnChange={false}
-        onSubmit={(values, { setSubmitting, errors }) => {
-          if (errors && errors.length) return;
-
-          register({ variables: values })
+        onSubmit={(values) =>
+          register({
+            variables: {
+              username: values.username,
+              preferredWorkTime: timeStringToMinutes(values.preferredWorkTime),
+              password: values.password,
+            },
+          })
             .then((res) => {
-              setSubmitting(false);
+              if (res && res.data && res.data.createUser) {
+                localStorage.setItem("token", res.data.createUser);
+                refreshUser();
+              }
             })
             .catch((e) => {
-              setSubmitting(false);
               console.error(e);
-            });
-        }}
+            })
+        }
       >
         {({
           values,
@@ -74,6 +107,31 @@ function Register(props) {
                 <p className="text-danger">{errors.username}</p>
               )}
             </div>
+
+            <div className="form-group">
+              <label htmlFor="registerPwt">Daily work objective (HH:MM)</label>
+              <InputMask
+                mask="99:99"
+                alwaysShowMask={true}
+                className="form-control"
+                name="preferredWorkTime"
+                id="registerPwt"
+                autoComplete="off"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.preferredWorkTime}
+                required
+              />
+              {readableTimeString(values.preferredWorkTime) && (
+                <p className="text-muted mb-0">
+                  {readableTimeString(values.preferredWorkTime)}
+                </p>
+              )}
+              {errors.preferredWorkTime && (
+                <p className="text-danger">{errors.preferredWorkTime}</p>
+              )}
+            </div>
+
             <div className="form-group">
               <label htmlFor="registerPassword">Password</label>
               <input

@@ -6,17 +6,27 @@ const generateToken = require("../lib/generateToken");
 const isValidDateString = require("../lib/isValidDateString");
 
 module.exports = {
-  createUser: async (_parent, { username, password, permissions }, ctx) => {
+  createUser: async (
+    _parent,
+    { username, preferredWorkTime, password, permissions },
+    ctx
+  ) => {
     // console.log(ctx);
     if (permissions && permissions.length) {
-      // Setting custom permissions, make sure it's an admin
-      isLoggedIn(ctx, ["ADMIN"]);
+      // Setting custom permissions, make sure it's an admin or UM
+      if (permissions.includes("ADMIN")) isLoggedIn(ctx, ["ADMIN"]);
+      else isLoggedIn(ctx, ["ADMIN", "USERMANAGER"]);
     } else {
       permissions = ["USER"];
     }
 
+    if (preferredWorkTime < 15 || preferredWorkTime > 1440)
+      throw new Error(
+        "Daily work objective must be between 15 mins and 24 hours"
+      );
+
     const user = await User.register(
-      new User({ username, permissions }),
+      new User({ username, permissions, preferredWorkTime }),
       password
     ).catch((e) => {
       throw e;

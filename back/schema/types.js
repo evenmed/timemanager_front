@@ -43,6 +43,7 @@ const types = gql`
   type Mutation {
     createUser(
       username: String!,
+      preferredWorkTime: Int!,
       password: String!,
       permissions: [Permission!]
     ): String! # JWT token

@@ -99,20 +99,10 @@ const CalendarHeader = ({ calendarApi, title, setListStart, setListEnd }) => {
 
   const exportEvents = (from, to) => {
     if (from.getUTCDate() < to.getUTCDate()) {
-      // Valid date range, export events
-      const currentStartDate = new Date(startDate);
-      const currentEndDate = new Date(endDate);
-      const currentView = calendarApi.view.type;
-
       updateView("list");
       setListStart(from);
       setListEnd(to);
       window.print();
-
-      // Go back to old view
-      setListStart(currentStartDate);
-      setListEnd(currentEndDate);
-      updateView(currentView);
     }
   };
 
