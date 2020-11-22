@@ -4,6 +4,7 @@ import DatePicker from "react-datepicker";
 import InputMask from "react-input-mask";
 import moment from "moment";
 import PropTypes from "prop-types";
+import { v4 as uuidv4 } from "uuid";
 
 import Error from "../helpers/Error";
 import readableTimeString from "../../lib/readableTimeString";
@@ -132,17 +133,20 @@ const EditEventForm = (props) => {
   if (queryLoading) return <p>Fetching event info...</p>;
   if (queryError) return <Error error={queryError} />;
 
+  // Form is included multiple times, salt to prevent duplicate IDs
+  const salt = uuidv4();
+
   return (
     <form onSubmit={props.handleSubmit}>
       <Error error={props.error} />
 
       <div className="form-group">
-        <label htmlFor="eventTitle">Title</label>
+        <label htmlFor={`${salt}-eventTitle`}>Title</label>
         <input
           type="text"
           className="form-control"
           name="title"
-          id="eventTitle"
+          id={`${salt}-eventTitle`}
           autoComplete="off"
           onChange={props.handleChange}
           onBlur={props.handleBlur}
@@ -155,10 +159,10 @@ const EditEventForm = (props) => {
       </div>
 
       <div className="form-group">
-        <label htmlFor="eventDate">Date</label>
+        <label htmlFor={`${salt}-eventDate`}>Date</label>
         <div>
           <DatePicker
-            id="eventDate"
+            id={`${salt}-eventDate`}
             className="form-control"
             name="date"
             dateFormat="MMMM d, yyyy"
@@ -176,13 +180,13 @@ const EditEventForm = (props) => {
       </div>
 
       <div className="form-group">
-        <label htmlFor="eventTime">Duration (HH:MM)</label>
+        <label htmlFor={`${salt}-eventTime`}>Duration (HH:MM)</label>
         <InputMask
           mask="99:99"
           alwaysShowMask={true}
           className="form-control"
           name="time"
-          id="eventTime"
+          id={`${salt}-eventTime`}
           autoComplete="off"
           onChange={props.handleChange}
           onBlur={props.handleBlur}
@@ -200,11 +204,11 @@ const EditEventForm = (props) => {
       </div>
 
       <div className="form-group">
-        <label htmlFor="eventNotes">Notes</label>
+        <label htmlFor={`${salt}-eventNotes`}>Notes</label>
         <textarea
           className="form-control"
           name="notes"
-          id="eventNotes"
+          id={`${salt}-eventNotes`}
           autoComplete="off"
           onChange={props.handleChange}
           onBlur={props.handleBlur}
