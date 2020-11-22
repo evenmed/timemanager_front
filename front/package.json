@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start -p $PORT"
+    "start": "next start -p $PORT",
+    "test": "NODE_ENV=test jest --watch"
   },
   "dependencies": {
     "@apollo/client": "^3.2.5",
@@ -27,5 +28,14 @@
     "react-input-mask": "^2.0.4",
     "sass": "^1.29.0",
     "uuid": "^8.3.1"
+  },
+  "devDependencies": {
+    "@babel/preset-env": "^7.12.7",
+    "@babel/preset-react": "^7.12.7",
+    "@wojtekmaj/enzyme-adapter-react-17": "^0.3.1",
+    "babel-jest": "^26.6.3",
+    "enzyme": "^3.11.0",
+    "jest": "^26.6.3",
+    "react-test-renderer": "^17.0.1"
   }
 }
