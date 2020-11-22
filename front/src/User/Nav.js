@@ -5,7 +5,7 @@ import LogOut from "./LogOut";
 
 const Nav = () => {
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav className="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
       <Link href="/">
         <a className="navbar-brand" title="Home">
           Ultimate Time Manager

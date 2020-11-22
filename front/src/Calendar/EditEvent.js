@@ -10,7 +10,6 @@ import readableTimeString from "../../lib/readableTimeString";
 import timeStringToMinutes from "../../lib/timeStringToMinutes";
 import minutesToTimeString from "../../lib/minutesToTimeString";
 
-import "react-datepicker/dist/react-datepicker.css";
 import DeleteEvent from "./DeleteEvent";
 
 const UPDATE_EVENT_MUTATION = gql`

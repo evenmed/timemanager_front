@@ -1,7 +1,9 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 
 const Modal = (props) => {
+  const modalBg = useRef(null);
+
   useEffect(() => {
     if (props.active) {
       document.body.classList.add("modal-open");
@@ -18,7 +20,13 @@ const Modal = (props) => {
           display: "block",
           pointerEvents: props.active ? "all" : "none",
         }}
+        ref={modalBg}
         tabIndex="-1"
+        onClick={function (e) {
+          // Hide modal when bg is clicked
+          if (modalBg && modalBg.current && e.target === modalBg.current)
+            props.hideModal();
+        }}
       >
         <div className="modal-dialog">
           <div className="modal-content">

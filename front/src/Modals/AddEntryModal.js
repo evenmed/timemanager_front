@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Modal, { ModalBody, ModalFooter } from "./Modal";
+import Modal, { ModalBody } from "./Modal";
 import EditEvent from "../Calendar/EditEvent";
 
 function AddEntryModal() {

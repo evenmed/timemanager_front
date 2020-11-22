@@ -11,6 +11,9 @@ import LogInRegister from "../src/User/LogInRegister";
 import "../styles/fontAwesome/all.min.css";
 import "../styles/darkly.min.css";
 
+// Datepicker styles
+import "react-datepicker/dist/react-datepicker.css";
+
 // Custom styles
 import "../styles/globals.sass";
 
@@ -22,11 +25,11 @@ function MyApp({ Component, pageProps }) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <ApolloProvider client={client}>
-        <div className="container pt-4">
+        <div className="container py-4">
           <User>
             {(isLoggedIn) => (
               <>
-                <div className="row">
+                <div className="row print-hide">
                   <div className="col-12">
                     <Nav />
                   </div>

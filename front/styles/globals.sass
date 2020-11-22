@@ -2,6 +2,9 @@
   --bgRed: rgba(231, 76, 60, 0.3)
   --bgGreen: rgba(0, 188, 140, 0.3)
 
+.fc-list-table
+  margin-bottom: 0
+
 .fc .fc-today
   &.fc-day-header, .fc-day-number
     background: var(--yellow)
@@ -13,3 +16,36 @@
   background: rgba(0,0,0,0.5)
   *
     pointer-events: inherit !important
+
+.fc [data-date]
+  background-color: var(--bgRed) // Give all dates a red bg by default
+  -webkit-print-color-adjust: exact // Make sure bg color shows in print
+  td
+    background-color: transparent !important
+
+// Make sure datepicker is above calendar
+.react-datepicker-popper
+  z-index: 5 !important
+
+.print-show
+  display: none !important
+
+@media print
+  body
+    background-color: white
+
+  *
+    color: var(--dark)
+
+  .print-hide
+    display: none !important
+
+  .print-show
+    display: initial !important
+
+  .fc
+    [data-date]
+      color: white
+      background-color: var(--red)
+      *
+        color: inherit

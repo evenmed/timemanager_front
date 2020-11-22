@@ -6,15 +6,22 @@ const CalendarBgStyles = ({ minutesByDate, preferredWorkTime }) => {
   // However, given fullcalendar's nature, it's the cleanest way to do it
   return (
     <style>
-      {/* Give all dates a red bg by default */}
-      [data-date] {"{"}background: var(--bgRed);{"}"}
       {Object.keys(minutesByDate).map((date) => {
         // Make dates were time > pwt green
         if (minutesByDate[date] >= preferredWorkTime)
-          return `[data-date="${date}"] {background: var(--bgGreen)}`;
+          return `.fc [data-date="${date}"] {background: var(--bgGreen)}`;
 
         return ``;
       })}
+      @media print {"{"}
+      {Object.keys(minutesByDate).map((date) => {
+        // Use solid green on print
+        if (minutesByDate[date] >= preferredWorkTime)
+          return `.fc [data-date="${date}"] {background: var(--green)}`;
+
+        return ``;
+      })}
+      {"}"}
     </style>
   );
 };
