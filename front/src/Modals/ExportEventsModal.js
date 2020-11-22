@@ -1,8 +1,9 @@
 import React, { useState } from "react";
+import PropTypes from "prop-types";
 import Modal, { ModalBody } from "./Modal";
 import ExportEvents from "../Calendar/ExportEvents";
 
-const ExportEventsModal = () => {
+const ExportEventsModal = ({ exportEvents }) => {
   const [active, setActive] = useState(false);
 
   const hideModal = () => setActive(false);
@@ -14,11 +15,16 @@ const ExportEventsModal = () => {
       </button>
       <Modal title="Export events" active={active} hideModal={hideModal}>
         <ModalBody>
-          <ExportEvents onSubmit={hideModal} />
+          <ExportEvents {...{ exportEvents, onSubmit: hideModal }} />
         </ModalBody>
       </Modal>
     </>
   );
+};
+
+ExportEventsModal.propTypes = {
+  /** Function to export events */
+  exportEvents: PropTypes.func.isRequired,
 };
 
 export default ExportEventsModal;

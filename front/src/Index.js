@@ -10,14 +10,6 @@ const DynamicCalendar = dynamic(() => import("./Calendar/Calendar"), {
 function Index() {
   return (
     <>
-      <div className="mt-3 mb-4 row justify-content-between print-hide">
-        <div className="col-auto">
-          <ExportEventsModal />
-        </div>
-        <div className="col-auto">
-          <AddEntryModal />
-        </div>
-      </div>
       <div className="row justify-content-md-center">
         <DynamicCalendar />
       </div>

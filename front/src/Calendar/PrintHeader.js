@@ -12,8 +12,8 @@ const PrintHeader = ({ startDate, endDate }) => {
       <div className="row justify-content-center mb-4">
         <div className="col-auto text-center">
           <h4>
-            Events from {moment(startDate).format("MMMM Do, YYYY")} to{" "}
-            {moment(endDate).format("MMMM Do, YYYY")}
+            Events from {moment(startDate).utc().format("MMMM Do, YYYY")} to{" "}
+            {moment(endDate).utc().format("MMMM Do, YYYY")}
           </h4>
         </div>
       </div>
