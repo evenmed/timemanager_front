@@ -9,8 +9,10 @@ import Error from "../helpers/Error";
 import readableTimeString from "../../lib/readableTimeString";
 import timeStringToMinutes from "../../lib/timeStringToMinutes";
 import minutesToTimeString from "../../lib/minutesToTimeString";
+import { UserContext } from "../User/User";
 
 import DeleteEvent from "./DeleteEvent";
+import { useContext } from "react";
 
 const UPDATE_EVENT_MUTATION = gql`
   mutation updateEvent(
@@ -19,6 +21,7 @@ const UPDATE_EVENT_MUTATION = gql`
     $date: String!
     $time: Int!
     $notes: String
+    $author: ID!
   ) {
     updateEvent(
       _id: $_id
@@ -26,6 +29,7 @@ const UPDATE_EVENT_MUTATION = gql`
       date: $date
       time: $time
       notes: $notes
+      author: $author
     ) {
       _id
     }
@@ -48,6 +52,8 @@ function EditEvent(props) {
     refetchQueries: ["events"],
     awaitRefetchQueries: true,
   });
+
+  const { _id: userId } = useContext(UserContext);
 
   return (
     <>
@@ -77,6 +83,7 @@ function EditEvent(props) {
               notes: values.notes,
               date: moment(values.date).format("YYYY-MM-DD"),
               time: timeStringToMinutes(values.time),
+              author: userId,
             },
           })
             .then((res) => {

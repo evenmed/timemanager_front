@@ -28,7 +28,7 @@ const types = gql`
 
   type Query {
     me: User
-    user(_id: ID!): User!
+    user(_id: ID!): User
     users(
       limit: Int
       offset: Int
@@ -65,6 +65,7 @@ const types = gql`
       date: String!
       time: Int!
       notes: String
+      author: ID!
     ): Event
 
     deleteEvent(_id: ID!): Boolean!

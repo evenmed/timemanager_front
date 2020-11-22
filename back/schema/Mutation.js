@@ -74,7 +74,10 @@ module.exports = {
   updateEvent: async (_parent, args, ctx) => {
     isLoggedIn(ctx);
 
-    // console.log("updateEvent", args);
+    if (args.author && args.author !== ctx.req.user._id) {
+      // Updating / creating an event from someone else
+      isLoggedIn(ctx, ["ADMIN"]);
+    }
 
     if (!isValidDateString(args.date)) {
       throw new Error("Please enter a valid date in YYYY-MM-DD format");
@@ -84,7 +87,7 @@ module.exports = {
       ? await Event.findOne({ _id: mongoose.Types.ObjectId(args._id) })
       : new Event({
           ...args,
-          user: ctx.req.user,
+          user: args.author || ctx.req.user._id,
         });
 
     if (!event) {

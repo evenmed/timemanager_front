@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import PropTypes from "prop-types";
 import { UserContext } from "./User";
 import arrayIncludesAny from "../../lib/arrayIncludesAny";
+import Error from "../helpers/Error";
 
 /**
  * Checks if current user has a specific permission.
@@ -13,19 +14,19 @@ const CheckPermission = ({ permission, children, showError }) => {
   // Make sure user is signed in
   if (!userPermissions)
     return showError ? (
-      <div className="alert alert-warning my-3">
-        <i className="fa fa-exclamation-circle"></i> You must be signed in to
-        access this page.
-      </div>
+      <Error
+        error="You must be signed in to
+        access this page."
+      />
     ) : null;
 
   // Check if user has necessary permission
   if (permission && !arrayIncludesAny(userPermissions, permission))
     return showError ? (
-      <div className="alert alert-danger my-3">
-        <i className="fa fa-exclamation-circle"></i> You are not authorized to
-        access this page.
-      </div>
+      <Error
+        error="You are not authorized to
+        access this page."
+      />
     ) : null;
 
   return children;

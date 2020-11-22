@@ -2,7 +2,8 @@ import React from "react";
 import PropTypes from "prop-types";
 
 const DisplayError = ({ error }) => {
-  if (!error || !error.message) return null;
+  const stringError = typeof error === "string";
+  if (!error || (!error.message && !stringError)) return null;
 
   const formatErrorMessage = (msg) => {
     // Remove everything before ":"
@@ -22,6 +23,7 @@ const DisplayError = ({ error }) => {
         data-test="graphql-error"
         className="alert alert-danger my-3"
       >
+        <i className="fa fa-fw fa-exclamation-circle"></i>{" "}
         <strong>Error: </strong>
         {formatErrorMessage(error.message)}
       </div>
@@ -30,8 +32,9 @@ const DisplayError = ({ error }) => {
 
   return (
     <div className="alert alert-danger my-4" data-test="graphql-error">
+      <i className="fa fa-fw fa-exclamation-circle"></i>{" "}
       <strong>Error: </strong>
-      {formatErrorMessage(error.message)}
+      {formatErrorMessage(stringError ? error : error.message)}
     </div>
   );
 };

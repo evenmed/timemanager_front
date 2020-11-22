@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { useQuery, gql } from "@apollo/client";
+import Link from "next/link";
 import minutesToHours from "../../lib/minutesToHours";
 import Loading from "../helpers/Loading";
 import Error from "../helpers/Error";
 import EditAccountModal from "../Modals/EditAccountModal";
+import CheckPermission from "./CheckPermission";
 
 const USERS_QUERY = gql`
   query users($limit: Int!, $offset: Int!) {
@@ -54,6 +56,16 @@ const ManageUsers = () => {
                       >
                         <i className="fa fa-pencil" /> Edit
                       </button>
+                      <CheckPermission permission="ADMIN">
+                        <Link href={`calendar/${u._id}`}>
+                          <a
+                            className="btn btn-success ml-1 btn-sm"
+                            title={`${u.username}'s calendar`}
+                          >
+                            <i className="fa fa-calendar-alt" /> Calendar
+                          </a>
+                        </Link>
+                      </CheckPermission>
                     </td>
                   </tr>
                 ))}

@@ -202,3 +202,4 @@ EditAccount.propTypes = {
 };
 
 export default EditAccount;
+export { SINGLE_USER_QUERY };
