@@ -1,0 +1,62 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<CheckPermission/> doesn't render content for signed out users 1`] = `<CheckPermission />`;
+
+exports[`<CheckPermission/> renders content for authorized users 1`] = `
+<CheckPermission>
+  <p
+    className="content"
+  >
+    Nice content
+  </p>
+</CheckPermission>
+`;
+
+exports[`<CheckPermission/> renders error for signed out users when showError is true 1`] = `
+<CheckPermission
+  showError={true}
+>
+  <DisplayError
+    error="You must be signed in to access this page."
+  >
+    <div
+      className="alert alert-danger my-4"
+      data-test="graphql-error"
+    >
+      <i
+        className="fa fa-fw fa-exclamation-circle"
+      />
+       
+      <strong>
+        Error: 
+      </strong>
+      You must be signed in to access this page.
+    </div>
+  </DisplayError>
+</CheckPermission>
+`;
+
+exports[`<CheckPermission/> renders error for unauthorized users when showError is true 1`] = `
+<CheckPermission
+  permission="ADMIN"
+  showError={true}
+>
+  <DisplayError
+    error="You are not authorized to access this page."
+  >
+    <div
+      className="alert alert-danger my-4"
+      data-test="graphql-error"
+    >
+      <i
+        className="fa fa-fw fa-exclamation-circle"
+      />
+       
+      <strong>
+        Error: 
+      </strong>
+      You are not authorized to access this page.
+    </div>
+  </DisplayError>
+</CheckPermission>
+`;
