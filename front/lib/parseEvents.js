@@ -15,7 +15,12 @@ export default function parseEvents(events) {
   let totalMinsByDate = {};
   let eventStartByDate = {};
 
-  if (!events || !events.length) return [[], totalMinsByDate];
+  if (
+    !events ||
+    !events.length ||
+    !events.every((e) => typeof e === "object" && e._id)
+  )
+    return [[], totalMinsByDate];
 
   const parsedEvents = events.map(({ _id, date, title, time, notes }) => {
     if (!totalMinsByDate[date]) totalMinsByDate[date] = 0;

@@ -2,10 +2,12 @@ import maybeAddTrailingZero from "./maybeAddTrailingZero";
 
 /**
  * Takes in an amount of minutes returns a time string (HH:MM)
- * @param {Int} totalMins Amount of minutes
+ * @param {Number} totalMins (Integer) amount of minutes
  * @return {String} Time string (HH:MM)
  */
 export default function minutesToTimeString(totalMins) {
+  if (`${parseInt(totalMins)}` !== `${totalMins}` || totalMins < 0) return "";
+
   if (totalMins > 1440) {
     console.error(
       "minutesToTimeString: Minutes can't be above 1440 (24 hours)"

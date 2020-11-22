@@ -8,9 +8,16 @@ import maybeAddTrailingZero from "./maybeAddTrailingZero";
  * @return {String} UTC date string (YYYY-MM-DD)
  */
 export default function dateObjectToString(date, addTime = false) {
+  if (!date || typeof date.getUTCFullYear !== "function") return "";
+
   const year = date.getUTCFullYear();
   const month = maybeAddTrailingZero(date.getUTCMonth() + 1);
   const day = maybeAddTrailingZero(date.getUTCDate());
+
+  if (!year || !month || !day) {
+    console.error("dateObjToString fn: invalid date", date, year, month, day);
+    return "";
+  }
 
   return `${year}-${month}-${day}${addTime ? "T00:00:00" : ""}`;
 }
