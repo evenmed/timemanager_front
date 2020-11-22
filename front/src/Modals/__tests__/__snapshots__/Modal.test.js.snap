@@ -1,0 +1,121 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Modal/> renders with proper class 1`] = `
+<Fragment>
+  <div
+    className="modal fade "
+    onClick={[Function]}
+    style={
+      Object {
+        "display": "block",
+        "pointerEvents": "none",
+      }
+    }
+    tabIndex="-1"
+  >
+    <div
+      className="modal-dialog"
+    >
+      <div
+        className="modal-content"
+      >
+        <div
+          className="modal-header"
+        >
+          <h5
+            className="modal-title"
+          >
+            Test title
+          </h5>
+          <button
+            aria-label="Close"
+            className="close"
+            data-dismiss="modal"
+            onClick={[MockFunction]}
+            type="button"
+          >
+            <span
+              aria-hidden="true"
+            >
+              ×
+            </span>
+          </button>
+        </div>
+        <p>
+          Child
+        </p>
+      </div>
+    </div>
+  </div>
+</Fragment>
+`;
+
+exports[`<Modal/> renders with proper class 2`] = `
+<Fragment>
+  <div
+    className="modal fade show"
+    onClick={[Function]}
+    style={
+      Object {
+        "display": "block",
+        "pointerEvents": "all",
+      }
+    }
+    tabIndex="-1"
+  >
+    <div
+      className="modal-dialog"
+    >
+      <div
+        className="modal-content"
+      >
+        <div
+          className="modal-header"
+        >
+          <h5
+            className="modal-title"
+          >
+            Test title
+          </h5>
+          <button
+            aria-label="Close"
+            className="close"
+            data-dismiss="modal"
+            onClick={[MockFunction]}
+            type="button"
+          >
+            <span
+              aria-hidden="true"
+            >
+              ×
+            </span>
+          </button>
+        </div>
+        <p>
+          Child
+        </p>
+      </div>
+    </div>
+  </div>
+</Fragment>
+`;
+
+exports[`<ModalBody/> renders properly 1`] = `
+<div
+  className="modal-body"
+>
+  <p>
+    Some nice content
+  </p>
+</div>
+`;
+
+exports[`<ModalFooter/> renders properly 1`] = `
+<div
+  className="modal-footer"
+>
+  <p>
+    Some nice footer content
+  </p>
+</div>
+`;

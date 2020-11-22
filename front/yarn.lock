@@ -1645,6 +1645,13 @@
   dependencies:
     "@babel/types" "^7.3.0"
 
+"@types/cheerio@^0.22.22":
+  version "0.22.22"
+  resolved "https://registry.yarnpkg.com/@types/cheerio/-/cheerio-0.22.22.tgz#ae71cf4ca59b8bbaf34c99af7a5d6c8894988f5f"
+  integrity sha512-05DYX4zU96IBfZFY+t3Mh88nlwSMtmmzSYaQkKN48T495VV1dkHSah6qYyDTN5ngaS0i0VonH37m+RuzSM0YiA==
+  dependencies:
+    "@types/node" "*"
+
 "@types/graceful-fs@^4.1.2":
   version "4.1.4"
   resolved "https://registry.yarnpkg.com/@types/graceful-fs/-/graceful-fs-4.1.4.tgz#4ff9f641a7c6d1a3508ff88bc3141b152772e753"
@@ -3571,6 +3578,15 @@ enzyme-shallow-equal@^1.0.1, enzyme-shallow-equal@^1.0.4:
     has "^1.0.3"
     object-is "^1.1.2"
 
+enzyme-to-json@^3.6.1:
+  version "3.6.1"
+  resolved "https://registry.yarnpkg.com/enzyme-to-json/-/enzyme-to-json-3.6.1.tgz#d60740950bc7ca6384dfe6fe405494ec5df996bc"
+  integrity sha512-15tXuONeq5ORoZjV/bUo2gbtZrN2IH+Z6DvL35QmZyKHgbY1ahn6wcnLd9Xv9OjiwbAXiiP8MRZwbZrCv1wYNg==
+  dependencies:
+    "@types/cheerio" "^0.22.22"
+    lodash "^4.17.15"
+    react-is "^16.12.0"
+
 enzyme@^3.11.0:
   version "3.11.0"
   resolved "https://registry.yarnpkg.com/enzyme/-/enzyme-3.11.0.tgz#71d680c580fe9349f6f5ac6c775bc3e6b7a79c28"
@@ -5143,6 +5159,11 @@ jest-snapshot@^26.6.2:
     pretty-format "^26.6.2"
     semver "^7.3.2"
 
+jest-transform-graphql@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/jest-transform-graphql/-/jest-transform-graphql-2.1.0.tgz#903cb66bb27bc2772fd3e5dd4f7e9b57230f5829"
+  integrity sha1-kDy2a7J7wncv0+XdT36bVyMPWCk=
+
 jest-util@^26.6.2:
   version "26.6.2"
   resolved "https://registry.yarnpkg.com/jest-util/-/jest-util-26.6.2.tgz#907535dbe4d5a6cb4c47ac9b926f6af29576cbc1"
@@ -5454,7 +5475,7 @@ lodash.sortby@^4.7.0:
   resolved "https://registry.yarnpkg.com/lodash.sortby/-/lodash.sortby-4.7.0.tgz#edd14c824e2cc9c1e0b0a1b42bb5210516a42438"
   integrity sha1-7dFMgk4sycHgsKG0K7UhBRakJDg=
 
-lodash@^4.15.0, lodash@^4.17.11, lodash@^4.17.13, lodash@^4.17.14, lodash@^4.17.19:
+lodash@^4.15.0, lodash@^4.17.11, lodash@^4.17.13, lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17.19:
   version "4.17.20"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.20.tgz#b44a9b6297bcb698f1c51a3545a2b3b368d59c52"
   integrity sha512-PlhdFcillOINfeV7Ni6oF1TAEayyZBoZ8bcshTHqOYJYlrqzRK5hagpagky5o4HfCzzd1TRkXPMFq6cKk9rGmA==
@@ -6721,7 +6742,7 @@ react-input-mask@^2.0.4:
     invariant "^2.2.4"
     warning "^4.0.2"
 
-react-is@16.13.1, react-is@^16.13.1, react-is@^16.7.0, react-is@^16.8.1:
+react-is@16.13.1, react-is@^16.12.0, react-is@^16.13.1, react-is@^16.7.0, react-is@^16.8.1:
   version "16.13.1"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
   integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
