@@ -1,8 +1,9 @@
 import React, { useState } from "react";
+import PropTypes from "prop-types";
 import Modal, { ModalBody } from "./Modal";
 import EditEvent from "../Calendar/EditEvent";
 
-function AddEntryModal() {
+function AddEntryModal({ onSubmit }) {
   const [active, setActive] = useState(false);
 
   const hideModal = () => setActive(false);
@@ -14,11 +15,21 @@ function AddEntryModal() {
       </button>
       <Modal title="New event" active={active} hideModal={hideModal}>
         <ModalBody>
-          <EditEvent onSubmit={hideModal} />
+          <EditEvent
+            onSubmit={() => {
+              hideModal();
+              if (onSubmit) onSubmit();
+            }}
+          />
         </ModalBody>
       </Modal>
     </>
   );
 }
+
+AddEntryModal.propTypes = {
+  /** Callback for when an event is saved / deleted properly */
+  onSubmit: PropTypes.func,
+};
 
 export default AddEntryModal;

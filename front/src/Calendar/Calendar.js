@@ -1,4 +1,4 @@
-import React, { useContext, useState, useCallback } from "react";
+import React, { useContext, useState, useCallback, createElement } from "react";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
@@ -26,6 +26,13 @@ import { UserContext } from "../User/User";
 import EVENTS_QUERY from "./EventsQuery";
 
 function Calendar() {
+  // Calendar ref to control it with our custom header
+  // We use a callback to toggle a re-render on ref change
+  const [calendarRef, setCalendarRef] = useState(null);
+  const onRefChange = useCallback((node) => {
+    setCalendarRef(node);
+  });
+
   const { _id, preferredWorkTime } = useContext(UserContext); // minutes (8 hours)
   const { loading, error, data } = useQuery(EVENTS_QUERY, {
     variables: {
@@ -41,19 +48,30 @@ function Calendar() {
   const [listStart, setListStart] = useState(new Date(threeDaysAgo));
   const [listEnd, setListEnd] = useState(new Date(inThreeDays));
 
-  // Calendar ref to control it with our custom header
-  // We use a callback to toggle a re-render on ref change
-  const [calendarRef, setCalendarRef] = useState(null);
-  const onRefChange = useCallback((node) => {
-    setCalendarRef(node);
+  // We use the datesRender and viewSkeletonRender callbacks to manually toggle a
+  // re-render of our custom header whenever the displayed dates or view change
+  const [updateProp, setUpdateProp] = useState(0);
+  const onDatesChange = useCallback(() => {
+    setUpdateProp(updateProp + 1);
   });
 
-  // We use the datesRender callback to manually toggle a re-render
-  // of our custom header whenever the displayed dates change
-  const [datesTitle, setDatesTitle] = useState("");
-  const onDatesChange = useCallback(({ view }) => {
-    setDatesTitle(view.title);
-  });
+  // Add notes to events on list view
+  const onEventRender = ({ view, el, event }) => {
+    if (
+      view.type !== "list" ||
+      !event.extendedProps ||
+      !event.extendedProps.notes
+    )
+      return el;
+
+    const notesP = document.createElement("p");
+    notesP.classList.add("small", "mb-0", "mt-1");
+    notesP.innerHTML = `<strong>Notes: </strong>${event.extendedProps.notes}`;
+
+    el.querySelector(".fc-list-item-title").append(notesP);
+
+    return el;
+  };
 
   if (loading || typeof window === "undefined") return <Loading />;
   if (error) return <Error error={error} />;
@@ -70,12 +88,18 @@ function Calendar() {
 
       <CalendarHeader
         calendarApi={calendarRef ? calendarRef.getApi() : null}
-        title={datesTitle}
+        update={updateProp}
         setListStart={setListStart}
         setListEnd={setListEnd}
       />
 
-      <EditEventModal>
+      <EditEventModal
+        onSubmit={() => {
+          if (calendarRef) {
+            calendarRef.getApi().render();
+          }
+        }}
+      >
         {(showModal) => (
           <FullCalendar
             ref={onRefChange}
@@ -95,10 +119,12 @@ function Calendar() {
             themeSystem="bootstrap"
             events={events}
             editable={false}
+            slotEventOverlap={false}
             allDaySlot={false}
             slotLabelFormat="H [h]"
             displayEventTime={false}
             timeZone="UTC"
+            timeGridEventMinHeight={20}
             listDayFormat="ddd, MMM D, YYYY"
             listDayAltFormat={(date) => {
               // Add total hours to day heading in list view
@@ -109,6 +135,8 @@ function Calendar() {
             }}
             scrollTime="00:00:00"
             datesRender={onDatesChange}
+            viewSkeletonRender={onDatesChange}
+            eventRender={onEventRender}
           />
         )}
       </EditEventModal>

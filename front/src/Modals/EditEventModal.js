@@ -20,7 +20,13 @@ function EditEventModal(props) {
       {props.children(showModal, hideModal)}
       <Modal title="Edit event" active={active} hideModal={hideModal}>
         <ModalBody>
-          <EditEvent eventId={eventId} onSubmit={hideModal} />
+          <EditEvent
+            eventId={eventId}
+            onSubmit={() => {
+              hideModal();
+              if (props.onSubmit) props.onSubmit();
+            }}
+          />
         </ModalBody>
       </Modal>
     </>
@@ -29,6 +35,8 @@ function EditEventModal(props) {
 
 EditEventModal.propTypes = {
   children: PropTypes.func.isRequired,
+  /** Callback for when an event is saved / deleted properly */
+  onSubmit: PropTypes.func,
 };
 
 export default EditEventModal;

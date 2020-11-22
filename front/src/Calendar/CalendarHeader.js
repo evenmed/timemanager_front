@@ -6,7 +6,12 @@ import dateObjectToString from "../../lib/dateObjectToString";
 import AddEntryModal from "../Modals/AddEntryModal";
 import ExportEventsModal from "../Modals/ExportEventsModal";
 
-const CalendarHeader = ({ calendarApi, title, setListStart, setListEnd }) => {
+const CalendarHeader = ({
+  calendarApi,
+  updateProp,
+  setListStart,
+  setListEnd,
+}) => {
   // Dont' render header until calendar is ready
   if (!calendarApi) return null;
 
@@ -62,7 +67,7 @@ const CalendarHeader = ({ calendarApi, title, setListStart, setListEnd }) => {
         </div>
       </div>
       <div className="col-sm-4 text-center">
-        <h2>{title}</h2>
+        <h2>{calendarApi.view.title}</h2>
       </div>
     </>
   );
@@ -108,12 +113,15 @@ const CalendarHeader = ({ calendarApi, title, setListStart, setListEnd }) => {
 
   return (
     <>
-      <div className="mb-3 row justify-content-between print-hide">
+      <div
+        data-super-important-prop={updateProp}
+        className="mb-3 row justify-content-between print-hide"
+      >
         <div className="col-auto">
           <ExportEventsModal exportEvents={exportEvents} />
         </div>
         <div className="col-auto">
-          <AddEntryModal />
+          <AddEntryModal onSubmit={() => calendarApi.render()} />
         </div>
       </div>
       <div className="row fc-toolbar mb-3 print-hide">
