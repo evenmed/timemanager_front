@@ -25,6 +25,7 @@ const UserCalendar = ({ userId }) => {
 
   return (
     <UserContext.Provider value={data.user}>
+      <h2 className="mb-3">{data.user.username}'s Calendar</h2>
       <DynamicCalendar />
     </UserContext.Provider>
   );

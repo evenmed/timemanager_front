@@ -26,6 +26,13 @@ const Nav = () => {
 
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav ml-auto">
+            <li className="nav-item dropdown">
+              <Link href="/">
+                <a className="btn btn-success" title="My Calendar">
+                  <i className="fa fa-calendar-alt"></i> My Calendar
+                </a>
+              </Link>
+            </li>
             <CheckPermission permission={["ADMIN", "USERMANAGER"]}>
               <li className="nav-item">
                 <Link href="/users">
