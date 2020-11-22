@@ -69,7 +69,7 @@ function EditEvent(props) {
           }
           return errors;
         }}
-        onSubmit={(values) =>
+        onSubmit={(values, { resetForm }) =>
           updateEvent({
             variables: {
               _id: props.eventId || undefined,
@@ -81,6 +81,7 @@ function EditEvent(props) {
           })
             .then((res) => {
               if (props.onSubmit && res && res.data && res.data.updateEvent) {
+                resetForm();
                 props.onSubmit();
               }
             })
