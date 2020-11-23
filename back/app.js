@@ -1,13 +1,11 @@
 require("dotenv").config();
 const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
-const { ApolloServer } = require("apollo-server-express");
 const express = require("express");
 const passport = require("passport");
 const cors = require("cors");
 
-const resolvers = require("./schema/resolvers");
-const typeDefs = require("./schema/types");
+const createServer = require("./apolloServer");
 
 const isDev = process.env.NODE_ENV === "development";
 
@@ -108,14 +106,7 @@ app.use(passport.initialize());
 passport.use(User.createStrategy());
 
 // Start Apollo Server
-const server = new ApolloServer({
-  typeDefs,
-  resolvers,
-  playground: isDev,
-  context: ({ req, res }) => {
-    return { req, res };
-  },
-});
+const server = createServer();
 
 server.applyMiddleware({ app, cors: false });
 
