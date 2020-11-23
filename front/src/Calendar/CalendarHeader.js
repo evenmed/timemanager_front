@@ -42,8 +42,8 @@ const CalendarHeader = ({
   // Buttons nav for week / month views
   const datesNavButtons = (
     <>
-      <div className="col-sm-4 text-left">
-        <div className="btn-group" role="group" aria-label="Basic example">
+      <div className="col col-sm-4 text-left order-2 order-sm-1">
+        <div className="btn-group " role="group" aria-label="Basic example">
           <button
             onClick={() => calendarApi.prev()}
             type="button"
@@ -66,7 +66,7 @@ const CalendarHeader = ({
           </button>
         </div>
       </div>
-      <div className="col-sm-4 text-center">
+      <div className="col-12 col-sm-4 text-center order-1 order-sm-2 mb-2 mb-sm-0">
         <h2>{calendarApi.view.title}</h2>
       </div>
     </>
@@ -74,30 +74,34 @@ const CalendarHeader = ({
 
   // Range nav for list view
   const datesNavRange = (
-    <div className="col-sm-8 text-left">
+    <div className="col col-sm-8 text-left justify-content-start order-1">
       <div className="form-inline">
-        <label className="mr-1" htmlFor="dateFrom">
-          From:{" "}
-        </label>
-        <DatePicker
-          id="dateFrom"
-          className="form-control btn-secondary"
-          dateFormat="MMMM d, yyyy"
-          autoComplete="off"
-          selected={new Date(dateObjectToString(startDate, true))}
-          onChange={maybeSetStartDate}
-        />
-        <label className="mr-1 ml-2" htmlFor="dateTo">
-          To:{" "}
-        </label>
-        <DatePicker
-          id="dateTo"
-          className="form-control btn-secondary"
-          dateFormat="MMMM d, yyyy"
-          autoComplete="off"
-          selected={new Date(dateObjectToString(endDate, true))}
-          onChange={maybeSetEndDate}
-        />
+        <div className="form-group text-nowrap mb-2 mr-1">
+          <label className="mr-1" htmlFor="dateFrom">
+            From:{" "}
+          </label>
+          <DatePicker
+            id="dateFrom"
+            className="form-control btn-secondary"
+            dateFormat="MMMM d, yyyy"
+            autoComplete="off"
+            selected={new Date(dateObjectToString(startDate, true))}
+            onChange={maybeSetStartDate}
+          />
+        </div>
+        <div className="form-group text-nowrap mb-2">
+          <label className="mr-1" htmlFor="dateTo">
+            To:{" "}
+          </label>
+          <DatePicker
+            id="dateTo"
+            className="form-control btn-secondary"
+            dateFormat="MMMM d, yyyy"
+            autoComplete="off"
+            selected={new Date(dateObjectToString(endDate, true))}
+            onChange={maybeSetEndDate}
+          />
+        </div>
       </div>
     </div>
   );
@@ -124,9 +128,9 @@ const CalendarHeader = ({
           <AddEntryModal onSubmit={() => calendarApi.render()} />
         </div>
       </div>
-      <div className="row fc-toolbar mb-3 print-hide">
+      <div className="row fc-toolbar mb-3 print-hide justify-content-end">
         {calendarApi.view.type === "list" ? datesNavRange : datesNavButtons}
-        <div className="col-sm-4">
+        <div className="col-auto col-sm-4 order-3">
           <div className="form-inline">
             <select
               onChange={({ target }) => updateView(target.value)}

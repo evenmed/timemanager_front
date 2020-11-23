@@ -1,9 +1,11 @@
 import Link from "next/link";
+import { useState } from "react";
 import EditAccountModal from "../Modals/EditAccountModal";
 import CheckPermission from "./CheckPermission";
 import LogOut from "./LogOut";
 
 const Nav = () => {
+  const [show, setShow] = useState(false);
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
       <Link href="/">
@@ -20,11 +22,15 @@ const Nav = () => {
           aria-controls="navbarSupportedContent"
           aria-expanded="false"
           aria-label="Toggle navigation"
+          onClick={() => setShow(!show)}
         >
           <span className="navbar-toggler-icon"></span>
         </button>
 
-        <div className="collapse navbar-collapse" id="navbarSupportedContent">
+        <div
+          className={`collapse navbar-collapse${show ? " show" : ""}`}
+          id="navbarSupportedContent"
+        >
           <ul className="navbar-nav ml-auto">
             <li className="nav-item dropdown">
               <Link href="/">

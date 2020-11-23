@@ -47,7 +47,7 @@ const ManageUsers = () => {
       <div className="col-12">
         <EditAccountModal>
           {(showModal) => (
-            <table className="table table-striped">
+            <table className="table table-striped table-responsive-sm">
               <thead>
                 <tr>
                   <th scope="col">Username</th>
@@ -62,17 +62,17 @@ const ManageUsers = () => {
                     <td>{u.username}</td>
                     <td>{minutesToHours(u.preferredWorkTime)} hours</td>
                     <td>{u.permissions.join(", ")}</td>
-                    <td>
+                    <td className="p-1 text-center">
                       <button
                         onClick={() => showModal(u._id)}
-                        className="btn btn-primary btn-sm"
+                        className="btn btn-primary btn-sm m-1 text-nowrap"
                       >
                         <i className="fa fa-pencil" /> Edit
                       </button>
                       <CheckPermission permission="ADMIN">
                         <Link href={`calendar/${u._id}`}>
                           <a
-                            className="btn btn-success ml-1 btn-sm"
+                            className="btn btn-success m-1 btn-sm text-nowrap"
                             title={`${u.username}'s calendar`}
                           >
                             <i className="fa fa-calendar-alt" /> Calendar
