@@ -5,7 +5,7 @@ const moment = require("moment");
  *
  * @param {String} str Date string in YYYY-MM-DD format
  *
- * @returns {Boolean}
+ * @returns {Boolean} `true` if valid, `false` if not
  */
 const isValidDateString = (str) => moment(str, "YYYY-MM-DD", true).isValid();
 
