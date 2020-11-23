@@ -37,7 +37,7 @@ module.exports = {
     return token;
   },
 
-  logIn: async (_parent, { username, password }, ctx) => {
+  logIn: async (_parent, { username, password }, _ctx) => {
     const { user } = await User.authenticate()(username, password);
     if (!user) throw new Error("Invalid credentials. Please try again.");
 
@@ -46,29 +46,53 @@ module.exports = {
     return token;
   },
 
-  updateAccount: (
+  updateAccount: async (
     _parent,
-    { userId, username, preferredWorkTime, permissions },
+    { userId, username, preferredWorkTime, permissions, currentPw, newPw },
     ctx
   ) => {
     isLoggedIn(ctx);
 
-    const update = { username, preferredWorkTime };
+    const updatingOtherAcc = userId !== ctx.req.user._id;
 
-    if (userId !== ctx.req.user._id) {
+    if (updatingOtherAcc) {
       // Updating someone else's account
       isLoggedIn(ctx, ["ADMIN", "USERMANAGER"]);
     }
 
-    if (permissions && permissions.length) {
-      // Trying to assign permissions, make sure it's an admin
-      isLoggedIn(ctx, ["ADMIN"]);
-      update.permissions = permissions;
+    // Get user object
+    const user = await User.findById(userId);
+
+    // Only admins can modify admins
+    if (user.permissions.includes("ADMIN")) isLoggedIn(ctx, ["ADMIN"]);
+
+    // Trying to update pw
+    if (newPw) {
+      if (!updatingOtherAcc) {
+        // Updating our own pw, make sure current pw is correct
+        const res = await user.authenticate(currentPw);
+        if (res.error) throw new Error("Incorrect password. Please try again.");
+      }
+
+      const setPwRes = await user.setPassword(newPw);
+
+      if (!setPwRes) {
+        throw new Error("An error occurred while updating the password");
+      }
     }
 
-    return User.findOneAndUpdate({ _id: userId }, update, {
-      runValidators: true,
-    });
+    if (permissions && permissions.length) {
+      // Trying to assign permissions, make sure it's an admin or UM
+      if (permissions.includes("ADMIN")) isLoggedIn(ctx, ["ADMIN"]);
+      else isLoggedIn(ctx, ["ADMIN", "USERMANAGER"]);
+
+      user.permissions = permissions;
+    }
+
+    user.username = username;
+    user.preferredWorkTime = preferredWorkTime;
+
+    return user.save();
   },
 
   updateEvent: async (_parent, args, ctx) => {

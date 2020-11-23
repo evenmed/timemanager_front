@@ -57,6 +57,8 @@ const types = gql`
       username: String!
       preferredWorkTime: Int!
       permissions: [Permission!]
+      currentPw: String
+      newPw: String
     ): User!
 
     updateEvent(

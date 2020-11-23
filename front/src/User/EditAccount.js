@@ -11,6 +11,7 @@ import Loading from "../helpers/Loading";
 import readableTimeString from "../../lib/readableTimeString";
 import timeStringToMinutes from "../../lib/timeStringToMinutes";
 import minutesToTimeString from "../../lib/minutesToTimeString";
+import arrayIncludesAny from "../../lib/arrayIncludesAny";
 
 const UPDATE_ACCOUNT_MUTATION = gql`
   mutation updateAccount(
@@ -18,12 +19,16 @@ const UPDATE_ACCOUNT_MUTATION = gql`
     $username: String!
     $preferredWorkTime: Int!
     $permissions: [Permission!]
+    $currentPw: String
+    $newPw: String
   ) {
     updateAccount(
       userId: $userId
       username: $username
       preferredWorkTime: $preferredWorkTime
       permissions: $permissions
+      currentPw: $currentPw
+      newPw: $newPw
     ) {
       _id
     }
@@ -61,6 +66,7 @@ const EditAccount = (props) => {
   if (queryError) return <Error error={error} />;
 
   const { user } = data;
+  const updatingOtherAcount = user._id !== currentUser._id;
 
   return (
     <Formik
@@ -68,6 +74,10 @@ const EditAccount = (props) => {
         username: user.username,
         preferredWorkTime: minutesToTimeString(user.preferredWorkTime),
         permissions: user.permissions,
+        updatePw: false,
+        currentPw: "",
+        newPw: "",
+        newPwConfirm: "",
       }}
       validate={(values) => {
         const errors = {};
@@ -80,6 +90,15 @@ const EditAccount = (props) => {
               "Daily work objective must be between 15 mins and 24 hours";
         }
 
+        if (
+          values.updatePw &&
+          values.newPw &&
+          values.newPwConfirm &&
+          values.newPw !== values.newPwConfirm
+        ) {
+          errors.newPwConfirm = "Passwords do not match.";
+        }
+
         return errors;
       }}
       validateOnChange={false}
@@ -90,9 +109,15 @@ const EditAccount = (props) => {
             preferredWorkTime: timeStringToMinutes(values.preferredWorkTime),
             userId: props.userId || user._id,
             // Only admins can edit permissions
-            permissions: currentUser.permissions.includes("ADMIN")
+            permissions: arrayIncludesAny(currentUser.permissions, [
+              "ADMIN",
+              "USERMANAGER",
+            ])
               ? values.permissions
               : null,
+            currentPw:
+              values.updatePw && !updatingOtherAcount ? values.currentPw : null,
+            newPw: values.updatePw ? values.newPw : null,
           },
         })
           .then((res) => {
@@ -159,7 +184,69 @@ const EditAccount = (props) => {
             )}
           </div>
 
-          <CheckPermission permission={["ADMIN"]}>
+          <div>
+            <label>
+              <Field type="checkbox" name="updatePw" /> Change password
+            </label>
+          </div>
+          {values.updatePw && (
+            <>
+              {!updatingOtherAcount && (
+                <div className="form-group">
+                  <label htmlFor={`${user._id}-currentPw`}>
+                    Current Password
+                  </label>
+                  <input
+                    type="password"
+                    className="form-control"
+                    name="currentPw"
+                    id={`${user._id}-currentPw`}
+                    autoComplete="current-password"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    value={values.currentPw}
+                  />
+                  {errors.currentPw && (
+                    <p className="text-danger">{errors.currentPw}</p>
+                  )}
+                </div>
+              )}
+              <div className="form-group">
+                <label htmlFor={`${user._id}-newPw`}>New Password</label>
+                <input
+                  type="password"
+                  className="form-control"
+                  name="newPw"
+                  id={`${user._id}-newPw`}
+                  autoComplete="new-password"
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  value={values.newPw}
+                />
+                {errors.newPw && <p className="text-danger">{errors.newPw}</p>}
+              </div>
+              <div className="form-group">
+                <label htmlFor={`${user._id}-newPwConfirm`}>
+                  Confirm New Password
+                </label>
+                <input
+                  type="password"
+                  className="form-control"
+                  name="newPwConfirm"
+                  id={`${user._id}-newPwConfirm`}
+                  autoComplete="new-password"
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  value={values.newPwConfirm}
+                />
+                {errors.newPwConfirm && (
+                  <p className="text-danger">{errors.newPwConfirm}</p>
+                )}
+              </div>
+            </>
+          )}
+
+          <CheckPermission permission={["ADMIN", "USERMANAGER"]}>
             <div>
               <strong>Permissions:</strong>
             </div>
@@ -174,6 +261,8 @@ const EditAccount = (props) => {
                 USERMANAGER
               </label>
             </div>
+          </CheckPermission>
+          <CheckPermission permission={["ADMIN"]}>
             <div>
               <label>
                 <Field type="checkbox" name="permissions" value="ADMIN" /> ADMIN

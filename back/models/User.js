@@ -30,7 +30,12 @@ const UserSchema = new Schema({
   },
 });
 
-UserSchema.plugin(passportLocalMongoose);
+UserSchema.plugin(passportLocalMongoose, {
+  passwordValidator: (pw, cb) => {
+    if (pw.length < 5) return cb("Password must be at least 5 characters");
+    return cb();
+  },
+});
 
 module.exports = mongoose.model("User", UserSchema);
 module.exports.availablePermissions = availablePermissions;

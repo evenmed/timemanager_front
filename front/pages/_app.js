@@ -1,9 +1,7 @@
 import Head from "next/head";
 import { ApolloProvider } from "@apollo/client";
 import client from "../lib/apolloClient";
-import User from "../src/User/User";
-import Header from "../src/Header";
-import LogInRegister from "../src/User/LogInRegister";
+import Page from "../src/Page";
 
 // NProgress
 import "../styles/nprogress.sass";
@@ -28,22 +26,9 @@ function MyApp({ Component, pageProps }) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <ApolloProvider client={client}>
-        <div className="container py-4">
-          <User>
-            {(isLoggedIn) => (
-              <>
-                <Header />
-                {isLoggedIn ? (
-                  <Component {...pageProps} />
-                ) : (
-                  <div className="row justify-content-md-center">
-                    <LogInRegister />
-                  </div>
-                )}
-              </>
-            )}
-          </User>
-        </div>
+        <Page>
+          <Component {...pageProps} />
+        </Page>
       </ApolloProvider>
     </>
   );
