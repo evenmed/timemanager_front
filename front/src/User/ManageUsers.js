@@ -18,16 +18,29 @@ const USERS_QUERY = gql`
   }
 `;
 
+const limit = 10; // Users to show per page
+
 const ManageUsers = () => {
-  const [limit, setLimit] = useState(20); // Users per page
-  const [offset, setoOffset] = useState(0); // Users offset
+  const [offset, setOffset] = useState(0); // Users offset
 
   const { data, error, loading } = useQuery(USERS_QUERY, {
-    variables: { limit, offset },
+    variables: {
+      limit: limit + 1, // We do this to check if we should show "next" btn
+      offset,
+    },
   });
 
   if (loading) return <Loading />;
   if (error) return <Error error={error} />;
+
+  if (!data || !data.users || !data.users.length)
+    return <Error error="No users found" />;
+
+  const hasNextPage = data.users.length === limit + 1;
+
+  const users = [...data.users];
+
+  if (hasNextPage) users.pop();
 
   return (
     <div className="row pt-5">
@@ -44,7 +57,7 @@ const ManageUsers = () => {
                 </tr>
               </thead>
               <tbody>
-                {data.users.map((u) => (
+                {users.map((u) => (
                   <tr key={u._id}>
                     <td>{u.username}</td>
                     <td>{minutesToHours(u.preferredWorkTime)} hours</td>
@@ -73,6 +86,31 @@ const ManageUsers = () => {
             </table>
           )}
         </EditAccountModal>
+      </div>
+      <div className="col-12 text-center">
+        <div className="btn-group" role="group" aria-label="Basic example">
+          {offset > 0 && (
+            <button
+              onClick={() => setOffset(offset - limit)}
+              type="button"
+              className="btn btn-secondary"
+            >
+              <i className="fa fa-chevron-left"></i>
+            </button>
+          )}
+          <span className="btn btn-secondary">
+            Page {Math.round(offset / limit) + 1}
+          </span>
+          {hasNextPage && (
+            <button
+              onClick={() => setOffset(offset + limit)}
+              type="button"
+              className="btn btn-secondary"
+            >
+              <i className="fa fa-chevron-right"></i>
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );
