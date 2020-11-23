@@ -92,12 +92,14 @@ app.use(async (req, _res, next) => {
   if (!req.userId) return next();
 
   const user = await User.findById(req.userId);
-  req.user = {
-    _id: String(user._id),
-    username: user.username,
-    permissions: user.permissions,
-    preferredWorkTime: user.preferredWorkTime,
-  };
+  if (user) {
+    req.user = {
+      _id: String(user._id),
+      username: user.username,
+      permissions: user.permissions,
+      preferredWorkTime: user.preferredWorkTime,
+    };
+  }
   next();
 });
 

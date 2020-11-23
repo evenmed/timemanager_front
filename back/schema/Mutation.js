@@ -95,6 +95,31 @@ module.exports = {
     return user.save();
   },
 
+  deleteUser: async (_parent, { _id }, ctx) => {
+    isLoggedIn(ctx);
+
+    const userToDelete = await User.findById(_id);
+
+    if (!userToDelete) throw new Error("User not found.");
+
+    const deletingOtherAcc = _id !== ctx.req.user._id;
+
+    if (deletingOtherAcc) {
+      // Only admins can delete admins
+      if (userToDelete.permissions.includes("ADMIN"))
+        isLoggedIn(ctx, ["ADMIN"]);
+      else isLoggedIn(ctx, ["ADMIN", "USERMANAGER"]);
+    }
+
+    const res = await User.deleteOne({
+      _id,
+    });
+
+    if (res.deletedCount > 0) return true;
+
+    throw new Error("Couldn't delete user.");
+  },
+
   updateEvent: async (_parent, args, ctx) => {
     isLoggedIn(ctx);
 

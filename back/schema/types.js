@@ -61,6 +61,8 @@ const types = gql`
       newPw: String
     ): User!
 
+    deleteUser(_id: ID!): Boolean!
+
     updateEvent(
       _id: ID
       title: String!
