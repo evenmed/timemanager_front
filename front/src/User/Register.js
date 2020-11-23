@@ -1,29 +1,35 @@
-import { Formik } from "formik";
+import { Formik, Field } from "formik";
 import InputMask from "react-input-mask";
 import { useMutation, useLazyQuery, gql } from "@apollo/client";
 
-import { CURRENT_USER_QUERY } from "./User";
+import { CURRENT_USER_QUERY, UserContext } from "./User";
+import CheckPermission from "./CheckPermission";
 import Error from "../helpers/Error";
 import readableTimeString from "../../lib/readableTimeString";
 import timeStringToMinutes from "../../lib/timeStringToMinutes";
+import { useContext } from "react";
 
 const REGISTER_MUTATION = gql`
   mutation register(
     $username: String!
     $preferredWorkTime: Int!
     $password: String!
+    $permissions: [Permission!]
   ) {
     createUser(
       username: $username
       preferredWorkTime: $preferredWorkTime
       password: $password
+      permissions: $permissions
     )
   }
 `;
 
 function Register(props) {
+  const { _id: currentUserId } = useContext(UserContext);
+
   const [register, { error, loading }] = useMutation(REGISTER_MUTATION, {
-    refetchQueries: ["me"],
+    refetchQueries: ["me", "users"],
     awaitRefetchQueries: true,
   });
 
@@ -33,11 +39,12 @@ function Register(props) {
 
   return (
     <div>
-      <h3>Register</h3>
+      {!props.hideTitle && <h3>Register</h3>}
       <Formik
         initialValues={{
           username: "",
           preferredWorkTime: "08:00",
+          permissions: ["USER"],
           password: "",
           passwordConfirm: "",
         }}
@@ -61,19 +68,24 @@ function Register(props) {
           return errors;
         }}
         validateOnChange={false}
-        onSubmit={(values) =>
+        onSubmit={(values, { resetForm }) =>
           register({
             variables: {
               username: values.username,
               preferredWorkTime: timeStringToMinutes(values.preferredWorkTime),
               password: values.password,
+              permissions: currentUserId ? values.permissions : null,
             },
           })
             .then((res) => {
-              if (res && res.data && res.data.createUser) {
+              if (props.onSubmit) props.onSubmit();
+
+              if (res && res.data && res.data.createUser && !currentUserId) {
                 localStorage.setItem("token", res.data.createUser);
                 refreshUser();
               }
+
+              if (currentUserId) resetForm();
             })
             .catch((e) => {
               console.error(e);
@@ -131,6 +143,35 @@ function Register(props) {
                 <p className="text-danger">{errors.preferredWorkTime}</p>
               )}
             </div>
+
+            <CheckPermission permission={["ADMIN", "USERMANAGER"]}>
+              <div>
+                <strong>Permissions:</strong>
+              </div>
+              <div>
+                <label>
+                  <Field type="checkbox" name="permissions" value="USER" /> USER
+                </label>
+              </div>
+              <div>
+                <label>
+                  <Field
+                    type="checkbox"
+                    name="permissions"
+                    value="USERMANAGER"
+                  />{" "}
+                  USERMANAGER
+                </label>
+              </div>
+            </CheckPermission>
+            <CheckPermission permission={["ADMIN"]}>
+              <div>
+                <label>
+                  <Field type="checkbox" name="permissions" value="ADMIN" />{" "}
+                  ADMIN
+                </label>
+              </div>
+            </CheckPermission>
 
             <div className="form-group">
               <label htmlFor="registerPassword">Password</label>

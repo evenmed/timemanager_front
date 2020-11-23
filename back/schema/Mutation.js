@@ -11,7 +11,6 @@ module.exports = {
     { username, preferredWorkTime, password, permissions },
     ctx
   ) => {
-    // console.log(ctx);
     if (permissions && permissions.length) {
       // Setting custom permissions, make sure it's an admin or UM
       if (permissions.includes("ADMIN")) isLoggedIn(ctx, ["ADMIN"]);

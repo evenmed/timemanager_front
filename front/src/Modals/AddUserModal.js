@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import Modal, { ModalBody } from "./Modal";
-import EditEvent from "../Calendar/EditEvent";
+import Register from "../User/Register";
 
-function AddEntryModal({ onSubmit }) {
+function AddUserModal({ onSubmit }) {
   const [active, setActive] = useState(false);
 
   const hideModal = () => setActive(false);
@@ -11,11 +11,12 @@ function AddEntryModal({ onSubmit }) {
   return (
     <>
       <button className="btn btn-success" onClick={() => setActive(true)}>
-        <i className="fa fa-plus-circle"></i> Add event
+        <i className="fa fa-plus-circle"></i> Add user
       </button>
-      <Modal title="New event" active={active} hideModal={hideModal}>
+      <Modal title="New user" active={active} hideModal={hideModal}>
         <ModalBody>
-          <EditEvent
+          <Register
+            hideTitle
             onSubmit={() => {
               hideModal();
               if (onSubmit) onSubmit();
@@ -27,9 +28,9 @@ function AddEntryModal({ onSubmit }) {
   );
 }
 
-AddEntryModal.propTypes = {
-  /** Callback for when an event is created properly */
+AddUserModal.propTypes = {
+  /** Callback for when an user is created properly */
   onSubmit: PropTypes.func,
 };
 
-export default AddEntryModal;
+export default AddUserModal;
