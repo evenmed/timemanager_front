@@ -1,7 +1,7 @@
 import { useLazyQuery } from "@apollo/client";
 import { CURRENT_USER_QUERY } from "./User";
 
-const LogOut = () => {
+const LogOut = (props) => {
   const [refreshUser, { error, loading }] = useLazyQuery(CURRENT_USER_QUERY, {
     fetchPolicy: "network-only",
   });
@@ -13,6 +13,8 @@ const LogOut = () => {
       disabled={loading}
       className="btn btn-danger"
       onClick={() => {
+        if (props.onClick) props.onClick();
+
         localStorage.removeItem("token");
         refreshUser();
       }}

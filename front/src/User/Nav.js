@@ -6,6 +6,8 @@ import LogOut from "./LogOut";
 
 const Nav = () => {
   const [show, setShow] = useState(false);
+
+  const hide = () => setShow(false);
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
       <Link href="/">
@@ -31,10 +33,14 @@ const Nav = () => {
           className={`collapse navbar-collapse${show ? " show" : ""}`}
           id="navbarSupportedContent"
         >
-          <ul className="navbar-nav ml-auto">
+          <ul className="navbar-nav ml-auto text-center">
             <li className="nav-item dropdown">
               <Link href="/">
-                <a className="btn btn-success" title="My Calendar">
+                <a
+                  onClick={hide}
+                  className="btn btn-success"
+                  title="My Calendar"
+                >
                   <i className="fa fa-calendar-alt"></i> My Calendar
                 </a>
               </Link>
@@ -42,7 +48,7 @@ const Nav = () => {
             <CheckPermission permission={["ADMIN", "USERMANAGER"]}>
               <li className="nav-item">
                 <Link href="/users">
-                  <a className="btn btn-primary" title="Users">
+                  <a onClick={hide} className="btn btn-primary" title="Users">
                     <i className="fa fa-users"></i> Users
                   </a>
                 </Link>
@@ -58,7 +64,7 @@ const Nav = () => {
               </EditAccountModal>
             </li>
             <li className="nav-item">
-              <LogOut />
+              <LogOut onClick={hide} />
             </li>
           </ul>
         </div>
