@@ -10,34 +10,13 @@ const createServer = require("./apolloServer");
 const isDev = process.env.NODE_ENV === "development";
 
 // Connect to db
-
-if (isDev) {
-  mongoose.connect(
-    `mongodb://${process.env.DB_SERVER}/${process.env.DB_NAME}?retryWrites=true&w=majority`,
-    {
-      useNewUrlParser: true,
-      useCreateIndex: true,
-      useUnifiedTopology: true,
-      useFindAndModify: false,
-      connectTimeoutMS: 4000,
-    }
-  );
-} else {
-  mongoose.connect(
-    `mongodb+srv://${process.env.DB_USER}:${encodeURIComponent(
-      process.env.DB_PASS
-    )}@${process.env.DB_SERVER}/${
-      process.env.DB_NAME
-    }?retryWrites=true&w=majority`,
-    {
-      useNewUrlParser: true,
-      useCreateIndex: true,
-      useUnifiedTopology: true,
-      useFindAndModify: false,
-      connectTimeoutMS: 4000,
-    }
-  );
-}
+mongoose.connect(process.env.MONGO_URI, {
+  useNewUrlParser: true,
+  useCreateIndex: true,
+  useUnifiedTopology: true,
+  useFindAndModify: false,
+  connectTimeoutMS: 4000,
+});
 
 mongoose.connection.once("open", () => {
   console.log("connected to database");

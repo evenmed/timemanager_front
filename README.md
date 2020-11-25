@@ -20,10 +20,7 @@ PORT=4000
 FRONTEND_URL="http://localhost:3000"
 BACKEND_URL="http://localhost:4000"
 
-DB_USER="db_user"
-DB_PASS="db_pass"
-DB_NAME="db_name"
-DB_SERVER="db_server"
+MONGO_URI="(your entire mongodb uri connection string)"
 
 APP_SECRET="whateverYouWant"
 ```
