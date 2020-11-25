@@ -1,5 +1,10 @@
 import casual from "casual";
 
+/**
+ * Fake models of our different types to facilitate
+ * Apollo query and mutation testing
+ */
+
 // seed it so we get consistent results
 casual.seed(777);
 const fakeUser = () => ({
