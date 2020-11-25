@@ -1,14 +1,14 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## Running the project locally
 
-## Getting Started
+Clone the repository into your machine.
 
-First, run the development server:
+The frontend comes ready out of the box. Simply open a terminal window in the `/front` folder, and then run:
 
 ```bash
-npm run dev
-# or
-yarn dev
+yarn install && yarn build && yarn
 ```
+
+For the backend, you'll need to create a `.env` file inside the `/back` folder
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
