@@ -1,3 +1,5 @@
+This is Emilio Venegas's project for the 2nd technical screening interview for TopTal.
+
 ## Running the project locally
 
 Clone the repository into your machine.
@@ -5,26 +7,37 @@ Clone the repository into your machine.
 The frontend comes ready out of the box. Simply open a terminal window in the `/front` folder, and then run:
 
 ```bash
-yarn install && yarn build && yarn
+yarn && yarn build && yarn start
 ```
 
-For the backend, you'll need to create a `.env` file inside the `/back` folder
+Your frontend should be ready in your [http://localhost:3000](http://localhost:3000). It should also be giving you a connection error because the backend isn't running.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+For the backend, you'll need a MongoDB cluster. Once you have it, create a `.env` file inside the `/back` folder with the following content:
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+```bash
+NODE_ENV="development"
+PORT=4000
+FRONTEND_URL="http://localhost:3000"
+BACKEND_URL="http://localhost:4000"
 
-## Learn More
+DB_USER="db_user"
+DB_PASS="db_pass"
+DB_NAME="db_name"
+DB_SERVER="db_server"
 
-To learn more about Next.js, take a look at the following resources:
+APP_SECRET="whateverYouWant"
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Once that's done, run the following command inside the `/back` folder:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+```bash
+yarn && yarn start
+```
 
-## Deploy on Vercel
+You should see a message in your terminal confirming your connection to the database. If that doesn't happen, check your `.env` file.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/import?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Once you see the "Connected to database" message, open the frontend again [http://localhost:3000](http://localhost:3000). Now you should see the login screen and be able to access the app.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## Live test app
+
+If you don't want to install and run the project locally, the app is also available at [https://timemanager.emiliovenegas.me/](https://timemanager.emiliovenegas.me/).
