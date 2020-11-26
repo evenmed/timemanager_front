@@ -81,12 +81,17 @@ app.use(async (req, _res, next) => {
 });
 
 // passport config
+// We only use passport to hash passwords and authenticate users.
+// We don't have any sessions in the API, that's controlled through
+// a session token that gets stored in the frontend and passed via
+// an HTTP authorization header.
 app.use(passport.initialize());
 passport.use(User.createStrategy());
 
 // Start Apollo Server
 const server = createServer();
 
+// CORS is handled by express, disable it for apollo
 server.applyMiddleware({ app, cors: false });
 
 const port = process.env.PORT;

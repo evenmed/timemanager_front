@@ -6,6 +6,10 @@ const generateToken = require("../lib/generateToken");
 const isValidDateString = require("../lib/isValidDateString");
 
 module.exports = {
+  /**
+   * Creates a new user. If passed a custom `permissions` argument,
+   * current user must be a UM or ADMIN.
+   */
   createUser: async (
     _parent,
     { username, preferredWorkTime, password, permissions },
@@ -36,6 +40,9 @@ module.exports = {
     return token;
   },
 
+  /**
+   * Authenticates a user. If successful, returns JWT-encoded session ID.
+   */
   logIn: async (_parent, { username, password }, _ctx) => {
     const { user } = await User.authenticate()(username, password);
     if (!user) throw new Error("Invalid credentials. Please try again.");
@@ -45,6 +52,11 @@ module.exports = {
     return token;
   },
 
+  /**
+   * Updates a user. If passed a `permissions` argument, current user must be a
+   * UM or ADMIN.
+   * Only ADMINs can update ADMINs.
+   */
   updateAccount: async (
     _parent,
     { userId, username, preferredWorkTime, permissions, currentPw, newPw },
@@ -94,6 +106,9 @@ module.exports = {
     return user.save();
   },
 
+  /**
+   * Deletes a specific user. Only ADMINs can delete ADMINs
+   */
   deleteUser: async (_parent, { _id }, ctx) => {
     isLoggedIn(ctx);
 
@@ -119,6 +134,10 @@ module.exports = {
     throw new Error("Couldn't delete user.");
   },
 
+  /**
+   * Updates a specific event or creates a new one. Only ADMINs can edit
+   * other users' events.
+   */
   updateEvent: async (_parent, args, ctx) => {
     isLoggedIn(ctx);
 
@@ -164,6 +183,10 @@ module.exports = {
     return event.populate("user").execPopulate();
   },
 
+  /**
+   * Deletes a specific event. Only ADMINs can delete other
+   * users' events
+   */
   deleteEvent: async (_parent, { _id }, ctx) => {
     isLoggedIn(ctx);
 
