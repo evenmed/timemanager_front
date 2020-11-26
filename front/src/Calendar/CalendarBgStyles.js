@@ -1,9 +1,17 @@
 import React from "react";
 import PropTypes from "prop-types";
 
+/**
+ * Inline styles to give each date the right background color (red / green)
+ * based on whether the user worked over the preferredWorkTime or not.
+ */
 const CalendarBgStyles = ({ minutesByDate, preferredWorkTime }) => {
-  // This is so ugly that every keystroke hurts my heart
-  // However, given fullcalendar's nature, it's the cleanest way to do it
+  /**
+   * This is so ugly that every keystroke hurts my heart
+   * However, given fullcalendar's nature, it's the cleanest way to do it
+   * (Otherwise, we'd have to call a bunch of callbacks everytime the
+   * calendar is re-rendered).
+   */
   return (
     <style>
       {Object.keys(minutesByDate).map((date) => {

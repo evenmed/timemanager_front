@@ -13,6 +13,10 @@ const DynamicCalendar = dynamic(() => import("./Calendar"), {
   ssr: false,
 });
 
+/**
+ * Displays the calendar (along with all its actions) for a specific
+ * user.
+ */
 const UserCalendar = ({ userId }) => {
   const { data, error, loading } = useQuery(SINGLE_USER_QUERY, {
     variables: { _id: userId },

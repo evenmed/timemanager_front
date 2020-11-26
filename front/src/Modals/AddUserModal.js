@@ -3,6 +3,12 @@ import PropTypes from "prop-types";
 import Modal, { ModalBody } from "./Modal";
 import Register from "../User/Register";
 
+/**
+ * Modal to create new users. Can only be used by ADMINs and UMs.
+ * Renders a button that opens the modal.
+ * You can pass a callback for after the user is created via the
+ * `onSubmit` prop.
+ */
 function AddUserModal({ onSubmit }) {
   const [active, setActive] = useState(false);
 

@@ -10,7 +10,11 @@ const LOG_IN_MUTATION = gql`
   }
 `;
 
-function LogIn(props) {
+/**
+ * Log in form. If login is successful, saves login token to
+ * localStorage to keep the user signed in.
+ */
+function LogIn() {
   const [logIn, { error, loading }] = useMutation(LOG_IN_MUTATION);
   const [refreshUser] = useLazyQuery(CURRENT_USER_QUERY, {
     fetchPolicy: "network-only",

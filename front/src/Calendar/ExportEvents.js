@@ -3,6 +3,13 @@ import PropTypes from "prop-types";
 import { Formik } from "formik";
 import DatePicker from "react-datepicker";
 
+/**
+ * Form to select the date range that should be exported.
+ * The actual export function must be passed via the `exportEvents`
+ * function.
+ * Can take a callback function for after the export function is
+ * called via the `onSubmit` prop.
+ */
 const ExportEvents = ({ exportEvents, onSubmit }) => {
   return (
     <Formik
@@ -35,7 +42,6 @@ const ExportEvents = ({ exportEvents, onSubmit }) => {
         handleSubmit,
         isSubmitting,
         setFieldValue,
-        /* and other goodies */
       }) => (
         <form onSubmit={handleSubmit}>
           <div className="form-group">
@@ -51,7 +57,6 @@ const ExportEvents = ({ exportEvents, onSubmit }) => {
                 onChange={(date) => setFieldValue("from", date)}
                 onBlur={handleBlur}
                 required
-                // utcOffset={0}
               />
             </div>
             {errors.from && <p className="text-danger">{errors.from}</p>}
@@ -70,7 +75,6 @@ const ExportEvents = ({ exportEvents, onSubmit }) => {
                 onChange={(date) => setFieldValue("to", date)}
                 onBlur={handleBlur}
                 required
-                // utcOffset={0}
               />
             </div>
             {errors.to && <p className="text-danger">{errors.to}</p>}

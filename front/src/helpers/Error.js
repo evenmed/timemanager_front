@@ -1,6 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
 
+/**
+ * Displays an error message. If the `error` prop is null, it won't
+ * render anything. `error` can be an error object or simply a string.
+ */
 const DisplayError = ({ error }) => {
   const stringError = typeof error === "string";
   if (!error || (!error.message && !stringError)) return null;

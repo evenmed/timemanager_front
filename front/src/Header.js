@@ -7,6 +7,9 @@ Router.events.on("routeChangeStart", (url) => NProgress.start());
 Router.events.on("routeChangeComplete", () => NProgress.done());
 Router.events.on("routeChangeError", () => NProgress.done());
 
+/**
+ * Our Nav and Nprogress for page transitions
+ */
 const Header = () => {
   return (
     <div className="row print-hide">

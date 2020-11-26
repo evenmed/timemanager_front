@@ -9,6 +9,9 @@ const DELETE_USER_MUTATION = gql`
   }
 `;
 
+/**
+ * Button to delete a specific user.
+ */
 const DeleteUser = ({ userId, onSubmit: onCompleted }) => {
   const [deleteUser, { loading, error }] = useMutation(DELETE_USER_MUTATION, {
     variables: { _id: userId },

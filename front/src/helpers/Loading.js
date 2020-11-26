@@ -1,6 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
 
+/**
+ * Displays a loading spinner. You can optionally pass a
+ * `text` prop to display a message under the spinner
+ */
 const Loading = ({ text = "" }) => {
   return (
     <div className="py-5 text-center">

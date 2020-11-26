@@ -6,6 +6,12 @@ import dateObjectToString from "../../lib/dateObjectToString";
 import AddEntryModal from "../Modals/AddEntryModal";
 import ExportEventsModal from "../Modals/ExportEventsModal";
 
+/**
+ * Dynamic calendar header that changes based on the current
+ * calendar view.
+ * Controls the date range for the list view via the functions
+ * passed through the `setListStart`  and `setListEnd` props.
+ */
 const CalendarHeader = ({
   calendarApi,
   updateProp,
@@ -154,6 +160,12 @@ const CalendarHeader = ({
 CalendarHeader.propTypes = {
   /** FullCallendar object */
   calendarApi: PropTypes.object,
+  /** prop to manually toggle a re-render of the hedader */
+  updateProp: PropTypes.number.isRequired,
+  /** Function to set the "from" date for the list view */
+  setListStart: PropTypes.func.isRequired,
+  /** Function to set the "to" date for the list view */
+  setListEnd: PropTypes.func.isRequired,
 };
 
 export default CalendarHeader;

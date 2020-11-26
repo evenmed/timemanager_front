@@ -25,6 +25,11 @@ import { UserContext } from "../User/User";
 // and the query needs to be imported by more components
 import EVENTS_QUERY from "./EventsQuery";
 
+/**
+ * Displays the entire Calendar of events and its header for the user passed
+ * via context. All the actions (creating / editing events, exporting) are also
+ * done for the user in context.
+ */
 function Calendar() {
   // Calendar ref to control it with our custom header
   // We use a callback to toggle a re-render on ref change

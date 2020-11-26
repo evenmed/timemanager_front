@@ -2,7 +2,10 @@ import { useState } from "react";
 import LogIn from "./LogIn";
 import Register from "./Register";
 
-const LogInRegister = (props) => {
+/**
+ * Shows both the login form and register form.
+ */
+const LogInRegister = () => {
   // If true, show register form. Otherwise log in form.
   const [register, setRegister] = useState(false);
 

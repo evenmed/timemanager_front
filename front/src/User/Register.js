@@ -25,6 +25,10 @@ const REGISTER_MUTATION = gql`
   }
 `;
 
+/**
+ * Form to register new users. Can be used both by logged out users as well
+ * as ADMINs and UMs. If it's a logged out user, it will also log them in.
+ */
 function Register(props) {
   const { _id: currentUserId } = useContext(UserContext);
 

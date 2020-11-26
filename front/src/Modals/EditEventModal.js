@@ -4,14 +4,24 @@ import PropTypes from "prop-types";
 import Modal, { ModalBody } from "./Modal";
 import EditEvent from "../Calendar/EditEvent";
 
+/**
+ * Modal to edit a specific event. Child should be a function that receives 2
+ * functions as arguments: `showModal` and `hideModal`.
+ * `showModal` takes the event ID as its only argument.
+ */
 function EditEventModal(props) {
   const [active, setActive] = useState(false);
   const [eventId, setEventId] = useState("");
   const showModal = (id) => {
-    setActive(true);
-
     // Prevent event objects or anything else from being set as id
-    if (typeof id === "string") setEventId(id);
+    if (id && typeof id === "string") {
+      setEventId(id);
+      setActive(true);
+    } else {
+      console.error(
+        "<EditEventModal/>: showModal function must take an event's ID "
+      );
+    }
   };
   const hideModal = () => setActive(false);
 

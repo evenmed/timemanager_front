@@ -20,6 +20,10 @@ const USERS_QUERY = gql`
 
 const limit = 10; // Users to show per page
 
+/**
+ * Table to manage users. Will only work if user is UM or ADMIN.
+ * If ADMIN, will also show a link to each user's calendar.
+ */
 const ManageUsers = () => {
   const [offset, setOffset] = useState(0); // Users offset
 

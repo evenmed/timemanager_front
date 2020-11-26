@@ -3,6 +3,10 @@ import PropTypes from "prop-types";
 import Modal, { ModalBody } from "./Modal";
 import EditEvent from "../Calendar/EditEvent";
 
+/**
+ * Modal to add a new event for the user in context.
+ * Renders a button that opens the modal.
+ */
 function AddEntryModal({ onSubmit }) {
   const [active, setActive] = useState(false);
 

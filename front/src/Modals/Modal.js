@@ -1,6 +1,12 @@
 import React, { useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 
+/**
+ * Modal component. The modal's state is controlled via the `active` prop.
+ * You must pass a function to hide the modal (turn `active` to false) so
+ * the "close" button works properly.
+ * Wrap the content in <ModalBody/> or <ModalFooter/> to adopt default styles.
+ */
 const Modal = (props) => {
   const modalBg = useRef(null);
 

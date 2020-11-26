@@ -48,6 +48,11 @@ const SINGLE_EVENT_QUERY = gql`
   }
 `;
 
+/**
+ * Form to edit a specific event or create a new one. Event id must be passed
+ * through `evntId` prop. If no `evnentId`, a new event will be created with the
+ * user in context as its author.
+ */
 function EditEvent(props) {
   const [updateEvent, { error, loading }] = useMutation(UPDATE_EVENT_MUTATION, {
     refetchQueries: ["events"],

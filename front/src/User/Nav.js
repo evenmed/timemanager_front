@@ -4,6 +4,9 @@ import EditAccountModal from "../Modals/EditAccountModal";
 import CheckPermission from "./CheckPermission";
 import LogOut from "./LogOut";
 
+/**
+ * Nav displays different links based on the current user.
+ */
 const Nav = () => {
   const [show, setShow] = useState(false);
 

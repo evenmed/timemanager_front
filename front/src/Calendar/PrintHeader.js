@@ -4,6 +4,9 @@ import moment from "moment";
 import { UserContext } from "../User/User";
 import minutesToHours from "../../lib/minutesToHours";
 
+/**
+ * Header which will be displayed in print view.
+ */
 const PrintHeader = ({ startDate, endDate }) => {
   const { username, preferredWorkTime } = useContext(UserContext);
 

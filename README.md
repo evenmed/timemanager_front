@@ -35,6 +35,6 @@ You should see a message in your terminal confirming your connection to the data
 
 Once you see the "Connected to database" message, open the frontend again [http://localhost:3000](http://localhost:3000). Now you should see the login screen and be able to access the app.
 
-## Live test app
+## Live app
 
 If you don't want to install and run the project locally, the app is also available at [https://timemanager.emiliovenegas.me/](https://timemanager.emiliovenegas.me/).

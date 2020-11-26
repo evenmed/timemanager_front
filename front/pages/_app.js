@@ -18,6 +18,10 @@ import "react-datepicker/dist/react-datepicker.css";
 // Custom styles
 import "../styles/globals.sass";
 
+/**
+ * Wrap our entire app in our ApolloProvider and our <Page>, which
+ * takes care of authentication and general layout
+ */
 function MyApp({ Component, pageProps }) {
   return (
     <>

@@ -47,6 +47,10 @@ const SINGLE_USER_QUERY = gql`
   }
 `;
 
+/**
+ * Form to edit a user's account. You can pass a user's ID via the userId
+ * prop. Otherwise, edits the user passed down via context.
+ */
 const EditAccount = (props) => {
   const currentUser = useContext(UserContext);
 

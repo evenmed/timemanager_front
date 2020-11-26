@@ -1,6 +1,9 @@
 import { useLazyQuery } from "@apollo/client";
 import { CURRENT_USER_QUERY } from "./User";
 
+/**
+ * Log out button. Deletes session id from localStorage.
+ */
 const LogOut = (props) => {
   const [refreshUser, { error, loading }] = useLazyQuery(CURRENT_USER_QUERY, {
     fetchPolicy: "network-only",

@@ -4,6 +4,12 @@ import PropTypes from "prop-types";
 import Modal, { ModalBody } from "./Modal";
 import EditAccount from "../User/EditAccount";
 
+/**
+ * Modal to edit user's account. Child should be a function that receives 2
+ * functions as arguments: `showModal` and `hideModal`.
+ * `showModal` can optionally take a user's id as its only argument to edit
+ * a specific user's account. Otherwise will edit user in context.
+ */
 function EditAccountModal(props) {
   const [active, setActive] = useState(false);
   const [userId, setUserId] = useState("");

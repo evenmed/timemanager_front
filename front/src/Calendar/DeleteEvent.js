@@ -9,6 +9,9 @@ const DELETE_EVENT_MUTATION = gql`
   }
 `;
 
+/**
+ * Button to delete a specific event.
+ */
 const DeleteEvent = ({ eventId, onSubmit: onCompleted }) => {
   const [deleteEvent, { loading, error }] = useMutation(DELETE_EVENT_MUTATION, {
     variables: { _id: eventId },
