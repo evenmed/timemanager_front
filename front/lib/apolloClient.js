@@ -2,7 +2,10 @@ import { ApolloClient, InMemoryCache, createHttpLink } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 
 const httpLink = createHttpLink({
-  uri: process.env.ENDPOINT || "http://localhost:4000/graphql",
+  uri:
+    process.env.NODE_ENV === "development"
+      ? "http://localhost:4000/graphql"
+      : "https://timemanager-back.herokuapp.com/graphql",
   credentials: "include",
 });
 
